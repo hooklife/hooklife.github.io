@@ -75,7 +75,7 @@ comments: false
 - 使用laravel框架，预先生成中奖信息插入 redis，静态资源与页面全部扔到CDN上，抽奖时直接进行 redis 读取是否中奖
 - 用户信息、日志全部使用redis做缓存，使用队列插入到mysql。单机能承受 1000+ 并发。
 
-# 业余作品 (https://gihub.com/hooklife)
+# 业余作品 (https://github.com/hooklife)
 ## 1.thinkphp5-wechat
 	描述:微信 SDK for thinkphp5, 基于 overtrue/wechat
 ## 2.斗鱼火箭监视自动抢鱼丸
