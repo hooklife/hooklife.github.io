@@ -1,8 +1,8 @@
 ---
 title: 同步 I/O 多路复用之 select
 date: 2019-03-12 19:33:32
-tags: [Linux,C++]
-category: Linux
+tags: [linux,C++]
+category: linux
 ---
 
 
