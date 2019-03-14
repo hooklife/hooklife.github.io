@@ -1,0 +1,1 @@
+$NOT($MATCH($_URL, /\/$/))$REDIRECT(https://baidu.com, 302)

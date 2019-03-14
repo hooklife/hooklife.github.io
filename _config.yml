@@ -78,7 +78,17 @@ theme: indigo
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
-  type: git 
-  repo: git@git.coding.net:hooklife/new-blog.git
-  branch: master
+  # type: git 
+  # repo: git@git.coding.net:hooklife/new-blog.git
+  # branch: master
+  type: upyun
+  bucket: hooklife-blog
+  operator: hooklifeblog
+  password: uPv7qgeLexqbxFur
+  endpoint: v0.api.upyun.com
+  secret: secret
+  try_times: 5
+  ignore_path_re:
+    dir: null
+    file: ".DS_Store$"
 

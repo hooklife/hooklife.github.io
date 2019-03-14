@@ -85,7 +85,7 @@ baidu_tongji: a61423a9e09966d6384b1b3d64e97484
 tajs: false
 
 # google
-google_analytics: Q0dcgdnZhKa4dvpICv4c8cSAdU5m6zMXIqWTwaOMUsc
+google_analytics: UA-110514158-1
 google_site_verification: false
 
 # sogou站长验证 http://zhanzhang.sogou.com/
@@ -151,7 +151,7 @@ title_change:
 
 # 设置为 true 发布后将使用 unpkg cdn 最新的主题样式
 # 如果想让你的自定义样式生效，把此项设为 false
-cdn: true
+cdn: false
 
 # 设置为 true 将使用 lightbox render 图片
 lightbox: true
