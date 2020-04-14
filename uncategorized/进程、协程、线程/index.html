@@ -47,7 +47,7 @@ ga('send', 'pageview');
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://hooklife.me/img/process_thread_coroutine/cbu0a-yilrd.jpg">
 <meta property="og:image" content="https://hooklife.me/img/process_thread_coroutine/Timeslice.jpg">
-<meta property="og:updated_time" content="2020-04-14T06:07:15.736Z">
+<meta property="og:updated_time" content="2020-04-14T06:07:51.459Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="进程、协程、线程">
 <meta name="twitter:description" content="首先需要了解几个概念 并发 (Concurreny) 与 并行 (Parallelism)                                                                                             cbu0a-yilrd              并发1⼩小明可以⼀边玩⼿手机⼀边看电视。 事实上，⼩小明的眼睛在看电视的时">
@@ -253,8 +253,8 @@ ga('send', 'pageview');
 <li>协程需要保证程序是⾮堵塞</li>
 <li>切换开销远比线程小</li>
 </ul>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>　　对于 <strong>进程、线程</strong>，都是有内核进行调度，有 [<strong>CPU 时间片</strong>][CPU 时间片] 的概念</p>
-<p>　　对于 <strong>协程</strong>(用户级线程)，这是对内核透明的，也就是系统并不知道有协程的存在，是完全由用户自己的程序进行调度的，因为是由用户程序自己控制，那么就很难像抢占式调度那样做到强制的 CPU 控制权切换到其他进程/线程，通常只能进行 <strong>协作式调度</strong>，需要协程自己主动把控制权转让出去之后，其他协程才能被执行到</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>对于 <strong>进程、线程</strong>，都是有内核进行调度，有 [<strong>CPU 时间片</strong>][#CPU 时间片] 的概念</p>
+<p>对于 <strong>协程</strong>(用户级线程)，这是对内核透明的，也就是系统并不知道有协程的存在，是完全由用户自己的程序进行调度的，因为是由用户程序自己控制，那么就很难像抢占式调度那样做到强制的 CPU 控制权切换到其他进程/线程，通常只能进行 <strong>协作式调度</strong>，需要协程自己主动把控制权转让出去之后，其他协程才能被执行到</p>
 <h4 id="进程-与-线程-在-linux-中的区别"><a href="#进程-与-线程-在-linux-中的区别" class="headerlink" title="进程 与 线程 在 linux 中的区别"></a>进程 与 线程 在 linux 中的区别</h4><p>进程和线程其实在 linux 中区别并不大，具体内容可以查看<a href="https://juejin.im/entry/56daf0047664bf0052f0bdbd" target="_blank" rel="noopener">这篇文章</a></p>
 
         </div>
@@ -264,7 +264,7 @@ ga('send', 'pageview');
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2020-04-14T06:07:15.736Z" itemprop="dateUpdated">2020-04-14 14:07:15</time>
+    最后更新时间：<time datetime="2020-04-14T06:07:51.459Z" itemprop="dateUpdated">2020-04-14 14:07:51</time>
 </span><br>
 
 
