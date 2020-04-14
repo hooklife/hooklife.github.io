@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+<!-- Google Analytics -->
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-110514158-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+<!-- End Google Analytics -->
+
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?a61423a9e09966d6384b1b3d64e97484"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <link rel="canonical" href="true/前端/ubuntu中使用webpack,部分文件不能自动reload的解决方法/">
+    
+    
+    <title>ubuntu中使用webpack,部分文件不能自动reload的解决方法 | hooklife&#39;s blog | 这个世界会好么？</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="ubuntu,webpack">
+    <meta name="description" content="在webstrome中开发,发现大部分文件是可以自动reload的,但是部分文件不能自动进行reload">
+<meta name="keywords" content="ubuntu,webpack">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ubuntu中使用webpack,部分文件不能自动reload的解决方法">
+<meta property="og:url" content="https://hooklife.me/前端/ubuntu中使用webpack,部分文件不能自动reload的解决方法/index.html">
+<meta property="og:site_name" content="hooklife&#39;s blog">
+<meta property="og:description" content="在webstrome中开发,发现大部分文件是可以自动reload的,但是部分文件不能自动进行reload">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-04-14T03:59:02.086Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ubuntu中使用webpack,部分文件不能自动reload的解决方法">
+<meta name="twitter:description" content="在webstrome中开发,发现大部分文件是可以自动reload的,但是部分文件不能自动进行reload">
+    
+        <link rel="alternate" type="application/atom+xml" title="hooklife&#39;s blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.png">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">hooklife</h5>
+          <a href="mailto:miaogaopeng123@gmail.com" title="miaogaopeng123@gmail.com" class="mail">miaogaopeng123@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/hooklife" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">ubuntu中使用webpack,部分文件不能自动reload的解决方法</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">ubuntu中使用webpack,部分文件不能自动reload的解决方法</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-12-21T09:10:00.000Z" itemprop="datePublished" class="page-time">
+  2017-12-21
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/前端/">前端</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#解决方法"><span class="post-toc-number">1.</span> <span class="post-toc-text">解决方法</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-ubuntu中使用webpack,部分文件不能自动reload的解决方法"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">ubuntu中使用webpack,部分文件不能自动reload的解决方法</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-12-21 17:10:00" datetime="2017-12-21T09:10:00.000Z"  itemprop="datePublished">2017-12-21</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/前端/">前端</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>在webstrome中开发,发现大部分文件是可以自动reload的,但是部分文件不能自动进行reload</p>
+<a id="more"></a>
+<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>命令行中执行命令</p>
+<p>在你的系统中修改足够的 inotify watches,让webpack能正常监控文件变化 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf &amp;&amp; sudo sysctl -p</span><br></pre></td></tr></table></figure>
+<p>参考资料</p>
+<p><a href="https://stackoverflow.com/questions/26708205/webpack-watch-isnt-compiling-changed-files" target="_blank" rel="noopener">https://stackoverflow.com/questions/26708205/webpack-watch-isnt-compiling-changed-files</a></p>
+<p><a href="https://webpack.github.io/docs/troubleshooting.html" target="_blank" rel="noopener">https://webpack.github.io/docs/troubleshooting.html</a></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2020-04-14T03:59:02.086Z" itemprop="dateUpdated">2020-04-14 11:59:02</time>
+</span><br>
+
+
+        
+        原始链接：<a href="/前端/ubuntu中使用webpack,部分文件不能自动reload的解决方法/" target="_blank" rel="external">https://hooklife.me/前端/ubuntu中使用webpack,部分文件不能自动reload的解决方法/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://hooklife.me">
+            <img src="/img/avatar.png" alt="hooklife">
+            hooklife
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ubuntu/">ubuntu</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/webpack/">webpack</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hooklife.me/前端/ubuntu中使用webpack,部分文件不能自动reload的解决方法/&title=《ubuntu中使用webpack,部分文件不能自动reload的解决方法》 — hooklife's blog&pic=https://hooklife.me/img/avatar.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hooklife.me/前端/ubuntu中使用webpack,部分文件不能自动reload的解决方法/&title=《ubuntu中使用webpack,部分文件不能自动reload的解决方法》 — hooklife's blog&source=在webstrome中开发,发现大部分文件是可以自动reload的,但是部分文件不能自动进行reload" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hooklife.me/前端/ubuntu中使用webpack,部分文件不能自动reload的解决方法/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《ubuntu中使用webpack,部分文件不能自动reload的解决方法》 — hooklife's blog&url=https://hooklife.me/前端/ubuntu中使用webpack,部分文件不能自动reload的解决方法/&via=https://hooklife.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hooklife.me/前端/ubuntu中使用webpack,部分文件不能自动reload的解决方法/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/安全/记一次禅道渗透/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">记一次禅道渗透并获取webshell</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/linux/Supervisor在deepin安装、卸载与使用/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">supervisor在deepin安装、使用与卸载</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>hooklife &copy; 2015 - 2020</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hooklife.me/前端/ubuntu中使用webpack,部分文件不能自动reload的解决方法/&title=《ubuntu中使用webpack,部分文件不能自动reload的解决方法》 — hooklife's blog&pic=https://hooklife.me/img/avatar.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hooklife.me/前端/ubuntu中使用webpack,部分文件不能自动reload的解决方法/&title=《ubuntu中使用webpack,部分文件不能自动reload的解决方法》 — hooklife's blog&source=在webstrome中开发,发现大部分文件是可以自动reload的,但是部分文件不能自动进行reload" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hooklife.me/前端/ubuntu中使用webpack,部分文件不能自动reload的解决方法/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《ubuntu中使用webpack,部分文件不能自动reload的解决方法》 — hooklife's blog&url=https://hooklife.me/前端/ubuntu中使用webpack,部分文件不能自动reload的解决方法/&via=https://hooklife.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hooklife.me/前端/ubuntu中使用webpack,部分文件不能自动reload的解决方法/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPYAAAD2CAAAAADAeSUUAAADKUlEQVR42u3aQXLbQAwEQP//0841KUfyDEC7xFXz5JLEJXp9AAHsx0d8ff51ff0kub6u9uiT9q6vn192YWNjY9+EnYT7PJTk8bOtaaPK18fGxsY+j/0o0OcPSALNk02+cc/jjFbGxsbGfmP2vmxIiodZKYKNjY2NvUlg+yJk1pbCxsbGxs4DahNbXmzkvCS2i3tp2NjY2C/PzpPQ6//9I/NtbGxs7Bdmf46uPG0kIV47yo3ix8bGxj6I3Q5x21R37WqbAgkbGxv7bPZ+iaSVn3ybDHHz0XLyFGxsbOy7s/Nm/ewx7SbOtrveFGxsbOyD2D+RQtpxb37XJiliY2Njn81OUtTvp7pZOqzHwNjY2Ng3Zycv7m27P28qJevkz8qfgo2NjX0SO3mtT8JK0tssHbZlTBEnNjY29hHstom/L0KSdtJVhcdDBTY2NvZB7LwdP2vQXzWE2CTIh/8YbGxs7CPY7Ut8XgbkQ+J2rNu2vaLUhY2NjX1zdkuaHeuZpaV2MLwaDGBjY2MfwZ4FOktp++1of/lPKYKNjY19HHuWqDaJrR0t7Bte2NjY2OexZwVJ++3za7PRSVod7g02Njb2rdjtY4pjjk+fdVVB0kaIjY2N/T7spCRo78qLmU3Bg42Njf3O7LxcyVtRbS3Qtv4vGPpiY2Nj35bdjnjbciUvVPLx8AUpEBsbG/s4djvKbY/vJAHlybIdLWBjY2OfzZ69mV+VnGYDgzYSbGxs7Hdj55/kx3faX7ZN/zb5YWNjY5/EbkenbVGRH7KZHf3JjwQVJ4awsbGxb8XOG+7D1/2yaMn/GXkJ9E3exsbGxr45u71tVqjsD9y0yG+SLjY2NvZB7KtGp7Nrs4ltifKfNbGxsbGPYG8CbdPSbEDbps9o+7CxsbEPYq/yXgBrk03ecsoHGKthAzY2NvZN2G3SaregXacdKg8HxtjY2NjHsZMzLUlSSbajbehvDu5E821sbGzst2Hn6WrWvt8nv3zTsbGxsd+TPWvW70e87Zg5Gg9gY2NjH8fOl0gO07RFy2Yc224fNjY29nnsTamQN+43WzBrRSUFFTY2NvbN2X8ABc9kF7fLmcYAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/src/js/waves.min.js">
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

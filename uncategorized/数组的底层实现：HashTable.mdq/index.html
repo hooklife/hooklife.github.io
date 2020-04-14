@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+<!-- Google Analytics -->
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-110514158-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+<!-- End Google Analytics -->
+
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?a61423a9e09966d6384b1b3d64e97484"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <link rel="canonical" href="true/uncategorized/数组的底层实现：HashTable.mdq/">
+    
+    
+    <title>数组的底层实现：HashTable | hooklife&#39;s blog | 这个世界会好么？</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content>
+    <meta name="description" content="PHP 中的数组是一种强大且灵活的数据类型。 哈希 (Hash) Hash，一般翻译做”散列”，也有直接音译为”哈希”的，就是把任意长度的输入（又叫做预映射， pre-image），通过散列算法，变换成固定长度的输出，该输出就是散列值。这种转换是一种压缩映射，也就是散列值的空间通常远小于输入的空间，不同的输入可能会散列成相同的输出，而不可能从散列值来唯一的确定输入值。简单的说就是一种将任意长度的消">
+<meta name="keywords" content="hooklife,hooklife&#39;blog">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数组的底层实现：HashTable">
+<meta property="og:url" content="https://hooklife.me/uncategorized/数组的底层实现：HashTable.mdq/index.html">
+<meta property="og:site_name" content="hooklife&#39;s blog">
+<meta property="og:description" content="PHP 中的数组是一种强大且灵活的数据类型。 哈希 (Hash) Hash，一般翻译做”散列”，也有直接音译为”哈希”的，就是把任意长度的输入（又叫做预映射， pre-image），通过散列算法，变换成固定长度的输出，该输出就是散列值。这种转换是一种压缩映射，也就是散列值的空间通常远小于输入的空间，不同的输入可能会散列成相同的输出，而不可能从散列值来唯一的确定输入值。简单的说就是一种将任意长度的消">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-04-14T03:59:02.086Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="数组的底层实现：HashTable">
+<meta name="twitter:description" content="PHP 中的数组是一种强大且灵活的数据类型。 哈希 (Hash) Hash，一般翻译做”散列”，也有直接音译为”哈希”的，就是把任意长度的输入（又叫做预映射， pre-image），通过散列算法，变换成固定长度的输出，该输出就是散列值。这种转换是一种压缩映射，也就是散列值的空间通常远小于输入的空间，不同的输入可能会散列成相同的输出，而不可能从散列值来唯一的确定输入值。简单的说就是一种将任意长度的消">
+    
+        <link rel="alternate" type="application/atom+xml" title="hooklife&#39;s blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.png">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">hooklife</h5>
+          <a href="mailto:miaogaopeng123@gmail.com" title="miaogaopeng123@gmail.com" class="mail">miaogaopeng123@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/hooklife" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">数组的底层实现：HashTable</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">数组的底层实现：HashTable</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-09-09T02:59:40.000Z" itemprop="datePublished" class="page-time">
+  2019-09-09
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#哈希-Hash"><span class="post-toc-number">1.</span> <span class="post-toc-text">哈希 (Hash)</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#哈希表-Hash-table"><span class="post-toc-number">2.</span> <span class="post-toc-text">哈希表 (Hash table)</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#参考资料"><span class="post-toc-number">3.</span> <span class="post-toc-text">参考资料</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="php-数组的底层实现：HashTable.mdq"
+  class="post-article article-type-php fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">数组的底层实现：HashTable</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-09-09 10:59:40" datetime="2019-09-09T02:59:40.000Z"  itemprop="datePublished">2019-09-09</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>PHP 中的数组是一种强大且灵活的数据类型。</p>
+<h2 id="哈希-Hash"><a href="#哈希-Hash" class="headerlink" title="哈希 (Hash)"></a>哈希 (Hash)</h2><blockquote>
+<p><strong>Hash</strong>，一般翻译做”散列”，也有直接音译为”哈希”的，就是把任意长度的输入（又叫做预映射， pre-image），通过散列算法，变换成固定长度的输出，该输出就是散列值。这种转换是一种压缩映射，也就是散列值的空间通常远小于输入的空间，不同的输入可能会散列成相同的输出，而不可能从散列值来唯一的确定输入值。简单的说就是一种将任意长度的消息压缩到某一固定长度的消息摘要的函数。</p>
+</blockquote>
+<h2 id="哈希表-Hash-table"><a href="#哈希表-Hash-table" class="headerlink" title="哈希表 (Hash table)"></a>哈希表 (Hash table)</h2><blockquote>
+<p><strong>散列表</strong>（<strong>Hash table</strong>，也叫<strong>哈希表</strong>），是根据键（Key）而直接访问在内存存储位置的数据结构。也就是说，它通过计算一个关于键值的函数，将所需查询的数据映射到表中一个位置来访问记录，这加快了查找速度。 这个映射函数称做散列函数，存放记录的数组称做散列表</p>
+</blockquote>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2>
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2020-04-14T03:59:02.086Z" itemprop="dateUpdated">2020-04-14 11:59:02</time>
+</span><br>
+
+
+        
+        原始链接：<a href="/uncategorized/数组的底层实现：HashTable.mdq/" target="_blank" rel="external">https://hooklife.me/uncategorized/数组的底层实现：HashTable.mdq/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://hooklife.me">
+            <img src="/img/avatar.png" alt="hooklife">
+            hooklife
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hooklife.me/uncategorized/数组的底层实现：HashTable.mdq/&title=《数组的底层实现：HashTable》 — hooklife's blog&pic=https://hooklife.me/img/avatar.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hooklife.me/uncategorized/数组的底层实现：HashTable.mdq/&title=《数组的底层实现：HashTable》 — hooklife's blog&source=hooklife 的个人博客" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hooklife.me/uncategorized/数组的底层实现：HashTable.mdq/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《数组的底层实现：HashTable》 — hooklife's blog&url=https://hooklife.me/uncategorized/数组的底层实现：HashTable.mdq/&via=https://hooklife.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hooklife.me/uncategorized/数组的底层实现：HashTable.mdq/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/uncategorized/进程、协程、线程/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">进程、协程、线程</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/linux/SELECT、POLL和EPOLL/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">同步 I/O 多路复用之 select</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>hooklife &copy; 2015 - 2020</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hooklife.me/uncategorized/数组的底层实现：HashTable.mdq/&title=《数组的底层实现：HashTable》 — hooklife's blog&pic=https://hooklife.me/img/avatar.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hooklife.me/uncategorized/数组的底层实现：HashTable.mdq/&title=《数组的底层实现：HashTable》 — hooklife's blog&source=hooklife 的个人博客" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hooklife.me/uncategorized/数组的底层实现：HashTable.mdq/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《数组的底层实现：HashTable》 — hooklife's blog&url=https://hooklife.me/uncategorized/数组的底层实现：HashTable.mdq/&via=https://hooklife.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hooklife.me/uncategorized/数组的底层实现：HashTable.mdq/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACvElEQVR42u3ay24CMQwFUP7/p6nUVSt1mOtHoIuTFQKayQlS4tp+POLx/B4/X/98Z/f7V5++/s5o4OHh4bWWfjWqy03ev5r/6p380z+ejoeHh3eMlywowfRmu1rc6y2ONhcPDw/vo7zqUZ4DemE6Hh4e3v/nrR3WQdD8sXsPDw8PL+bl//wnadZnMF5fP71v4uHh4b2H1yuAffb18foeHh4eXquqnh++vUaB6oFeXiEeHh7eAd6kpSln99oCqgnlaKF4eHh4Y15SpkoWnT8+v2AmKeBf9x4eHh7eKm9yVeSTbl08vQ3Cw8PD2+VVW52qRa/5DL2NxsPDwzvHSx6TTJSXrPLtqAb3UdMVHh4e3piXt1LlAXG1QJUnEapFODw8PLxzvLxylF8bvYA4Yec/CR4eHt4JXo6ZFPV7LVzV0tojz6bg4eHhjXmT0La3HZMCW7NpAA8PD2+VNwmRq0mH/NDvlbsuQ2o8PDy8JV7vMZNiVX49LCSC8fDw8A7w8gB6ng54DZ40e938FR4eHt4B3glktejVayYopDnw8PDwlnh5OapamuqV/6tpkZuZ8fDw8A7wJmFxL/lbKPbH7Jt7Dw8PD2+VlxyvSYBbbRFIymPJlVD+NfDw8PCWeL1gdx5G56T8MmjW9/Dw8PBa52oyXf6AfIm7qeSbLDUeHh7eMd5ugrW6HdWGgyjIxsPDw1vlVRdRbQXotQ7MExl4eHh4p3lJw1PvEM8TGb1xsxI8PDy8Vd6zOKpRazWIn6R9Cw/Aw8PDG/B6h2+ShE1C8OoNVi2t4eHh4Z3jJZdBb296TQDV2Qr9EXh4eHirvPwyqIa5p8NiPDw8vP/PqwJy0jyhfFMAw8PDw3s7r3f09xLESZtCuXUADw8Pb5VXbYTq/VXeajApleHh4eGd5i30bQ3SwfPURnKd4OHh4S3xvgCcDkEFE6fClAAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/src/js/waves.min.js">
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

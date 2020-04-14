@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+<!-- Google Analytics -->
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-110514158-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+<!-- End Google Analytics -->
+
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?a61423a9e09966d6384b1b3d64e97484"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <link rel="canonical" href="true/安全/某企业官网的一次渗透/">
+    
+    
+    <title>某企业官网的一次渗透 | hooklife&#39;s blog | 这个世界会好么？</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="渗透">
+    <meta name="description" content="信息获取确认程序使用语言/框架                                                                                                           通过请求的 X-Powered-By 头和 URL 的来看,猜测网站环境为:php + apache并使用 thinkphp 框架进行开发 尝试尝试使用 S">
+<meta name="keywords" content="渗透">
+<meta property="og:type" content="article">
+<meta property="og:title" content="某企业官网的一次渗透">
+<meta property="og:url" content="https://hooklife.me/安全/某企业官网的一次渗透/index.html">
+<meta property="og:site_name" content="hooklife&#39;s blog">
+<meta property="og:description" content="信息获取确认程序使用语言/框架                                                                                                           通过请求的 X-Powered-By 头和 URL 的来看,猜测网站环境为:php + apache并使用 thinkphp 框架进行开发 尝试尝试使用 S">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://hooklife.me/img/2018-09-09/1.jpg">
+<meta property="og:image" content="https://hooklife.me/img/2018-09-09/2.jpg">
+<meta property="og:image" content="https://hooklife.me/img/2018-09-09/3.jpg">
+<meta property="og:image" content="https://hooklife.me/img/2018-09-09/4.jpg">
+<meta property="og:image" content="https://hooklife.me/img/2018-09-09/5.jpg">
+<meta property="og:updated_time" content="2020-04-14T03:59:02.087Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="某企业官网的一次渗透">
+<meta name="twitter:description" content="信息获取确认程序使用语言/框架                                                                                                           通过请求的 X-Powered-By 头和 URL 的来看,猜测网站环境为:php + apache并使用 thinkphp 框架进行开发 尝试尝试使用 S">
+<meta name="twitter:image" content="https://hooklife.me/img/2018-09-09/1.jpg">
+    
+        <link rel="alternate" type="application/atom+xml" title="hooklife&#39;s blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.png">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">hooklife</h5>
+          <a href="mailto:miaogaopeng123@gmail.com" title="miaogaopeng123@gmail.com" class="mail">miaogaopeng123@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/hooklife" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">某企业官网的一次渗透</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">某企业官网的一次渗透</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-09-09T05:00:12.000Z" itemprop="datePublished" class="page-time">
+  2018-09-09
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/安全/">安全</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#信息获取"><span class="post-toc-number">1.</span> <span class="post-toc-text">信息获取</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#确认程序使用语言-框架"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">确认程序使用语言/框架</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#尝试"><span class="post-toc-number">2.</span> <span class="post-toc-text">尝试</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#尝试使用-SQL-注入"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">尝试使用 SQL 注入</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#尝试-XSS-打后台"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">尝试 XSS 打后台</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#尝试历史-thinkphp-漏洞"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">尝试历史 thinkphp 漏洞</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#换种思路"><span class="post-toc-number">3.</span> <span class="post-toc-text">换种思路</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#根据-thinkphp-默认路径尝试获取日志"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">根据 thinkphp 默认路径尝试获取日志</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#弱口令"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">弱口令</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#结果"><span class="post-toc-number">4.</span> <span class="post-toc-text">结果</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#总结"><span class="post-toc-number">5.</span> <span class="post-toc-text">总结</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-某企业官网的一次渗透"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">某企业官网的一次渗透</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-09-09 13:00:12" datetime="2018-09-09T05:00:12.000Z"  itemprop="datePublished">2018-09-09</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/安全/">安全</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="信息获取"><a href="#信息获取" class="headerlink" title="信息获取"></a>信息获取</h1><h2 id="确认程序使用语言-框架"><a href="#确认程序使用语言-框架" class="headerlink" title="确认程序使用语言/框架"></a>确认程序使用语言/框架</h2><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/2018-09-09/1.jpg" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>通过请求的 X-Powered-By 头和 URL 的来看,猜测网站环境为:php + apache并使用 thinkphp 框架进行开发</p>
+<h1 id="尝试"><a href="#尝试" class="headerlink" title="尝试"></a>尝试</h1><h2 id="尝试使用-SQL-注入"><a href="#尝试使用-SQL-注入" class="headerlink" title="尝试使用 SQL 注入"></a>尝试使用 SQL 注入</h2><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/2018-09-09/2.jpg" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>尝试多个传参地址进行手动盲注，都失败，因为使用了框架的原因，可能过滤了大多数比较低级的注入</p>
+<h2 id="尝试-XSS-打后台"><a href="#尝试-XSS-打后台" class="headerlink" title="尝试 XSS 打后台"></a>尝试 XSS 打后台</h2><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/2018-09-09/3.jpg" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>无奈发现网站中所有表单竟然都不能真实提交</p>
+<h2 id="尝试历史-thinkphp-漏洞"><a href="#尝试历史-thinkphp-漏洞" class="headerlink" title="尝试历史 thinkphp 漏洞"></a>尝试历史 thinkphp 漏洞</h2><p>基本没有能利用到这个网站中的，不知道是thinkphp的版本问题还是…</p>
+<h1 id="换种思路"><a href="#换种思路" class="headerlink" title="换种思路"></a>换种思路</h1><h2 id="根据-thinkphp-默认路径尝试获取日志"><a href="#根据-thinkphp-默认路径尝试获取日志" class="headerlink" title="根据 thinkphp 默认路径尝试获取日志"></a>根据 thinkphp 默认路径尝试获取日志</h2><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/2018-09-09/4.jpg" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>发现网站竟然忘记关掉 debug !!!!!!,所有的SQL语句都暴漏了</p>
+<p>根据猜测得知后端日志地址为 URL/Runtime/Logs/Manage/18_09_09.log</p>
+<p>翻了翻,暂时没发现什么有用的东西</p>
+<p>尝试写脚本爬取所有日志，一点一点筛查，发现并没有改密码的SQL</p>
+<h2 id="弱口令"><a href="#弱口令" class="headerlink" title="弱口令"></a>弱口令</h2><p>在日志中发现了几个登陆的用户名，经过简单尝试发现，其中一个账号的密码竟然是简单的 admin</p>
+<p>真是白费了这么多功夫</p>
+<h1 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h1><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/2018-09-09/5.jpg" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>成功拿到后台,点到为止,也没有继续进行 getshell 什么的</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ol>
+<li>上线千万别忘记关闭 debug</li>
+<li>thinkphp 的程序建议简单修改程序,把index.php 移入 Public 文件夹中</li>
+<li>加强密码管理,不要存在这么简单的密码</li>
+<li>日志目录不要给可访问权限</li>
+<li>尽量不要暴漏程序使用的语言/框架</li>
+</ol>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2020-04-14T03:59:02.087Z" itemprop="dateUpdated">2020-04-14 11:59:02</time>
+</span><br>
+
+
+        
+        原始链接：<a href="/安全/某企业官网的一次渗透/" target="_blank" rel="external">https://hooklife.me/安全/某企业官网的一次渗透/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://hooklife.me">
+            <img src="/img/avatar.png" alt="hooklife">
+            hooklife
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/渗透/">渗透</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hooklife.me/安全/某企业官网的一次渗透/&title=《某企业官网的一次渗透》 — hooklife's blog&pic=https://hooklife.me/img/avatar.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hooklife.me/安全/某企业官网的一次渗透/&title=《某企业官网的一次渗透》 — hooklife's blog&source=hooklife 的个人博客" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hooklife.me/安全/某企业官网的一次渗透/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《某企业官网的一次渗透》 — hooklife's blog&url=https://hooklife.me/安全/某企业官网的一次渗透/&via=https://hooklife.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hooklife.me/安全/某企业官网的一次渗透/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/linux/SELECT、POLL和EPOLL/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">同步 I/O 多路复用之 select</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/安全/记一次禅道渗透/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">记一次禅道渗透并获取webshell</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>hooklife &copy; 2015 - 2020</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hooklife.me/安全/某企业官网的一次渗透/&title=《某企业官网的一次渗透》 — hooklife's blog&pic=https://hooklife.me/img/avatar.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hooklife.me/安全/某企业官网的一次渗透/&title=《某企业官网的一次渗透》 — hooklife's blog&source=hooklife 的个人博客" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hooklife.me/安全/某企业官网的一次渗透/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《某企业官网的一次渗透》 — hooklife's blog&url=https://hooklife.me/安全/某企业官网的一次渗透/&via=https://hooklife.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hooklife.me/安全/某企业官网的一次渗透/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACNElEQVR42u3awW7CMBAE0P7/T1Opt4qSzKyhUpyXE2po7JfD4vX46yu+Hj9X/vf8v54/Hz9z6cLAwLgs43F4tQPnU3/+5qunHc8NAwPjPox84BkpL83tS8HAwMB49Z22KM+miIGBgbG+mGsLdDsKBgYGRtvEJsMcA/K7H+zFMTAwLshog4H//PzBfAMDA+MijEd5tU1mUr5nM/n1BAwMjK0Zx8u748nl0eZ6IBqVYwwMjNsw8qYxb3FXttuKF42BgbE1oy5tCzFnwkvuRvEABgbGRox8SZcPVhfKcjPupInFwMDYjjErc23AuR6IYmBg3JMxOxKxgsyXjMXWGwYGxtaM9XhgFmfm4xYRJgYGxqaMFXe79pwd3YgabAwMjBswZpPON9fysCFh/PFkDAyMmzFmhyfaTbqkMS5gGBgYWzPyAT4RRs5Cgui0CAYGxnaMYYFbODrWhgR1ycbAwNiOsbLFnze3syVmsRjFwMDYmlFswZcRQjKJdjPu5MVhYGBsx2hjgFnDOWt0CyoGBsYNGG3T2C4K8wI6fDUYGBhbM/KDFPkyrj260Yaa9a8HBgbGxRmP8po1se3Bi+TuyZkRDAyMjRgrdTrfYls/TNb+MGBgYOzHaEvnbBL5tPJjasUCEQMDYwtGG2q2keRSvc+32zAwMG7PSCLG2QbccTGNRsTAwMAYLfJmbW0eJAyXhhgYGJdlzMKAnPHenbGTJBYDA2M7xhsayPIJK8fRlrIODAyM6zG+AUqeQc8DYmGlAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/src/js/waves.min.js">
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

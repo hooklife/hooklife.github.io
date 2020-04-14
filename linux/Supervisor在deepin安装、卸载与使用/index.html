@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+<!-- Google Analytics -->
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-110514158-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+<!-- End Google Analytics -->
+
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?a61423a9e09966d6384b1b3d64e97484"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <link rel="canonical" href="true/linux/Supervisor在deepin安装、卸载与使用/">
+    
+    
+    <title>supervisor在deepin安装、使用与卸载 | hooklife&#39;s blog | 这个世界会好么？</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="supervisor,ubuntu,deepin">
+    <meta name="description" content="简介Supervisor是一个python开发的进程管理工具，你可以使用它对  UNIX-like 操作系统的多个进程进行控制和监控。">
+<meta name="keywords" content="supervisor,ubuntu,deepin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="supervisor在deepin安装、使用与卸载">
+<meta property="og:url" content="https://hooklife.me/linux/Supervisor在deepin安装、卸载与使用/index.html">
+<meta property="og:site_name" content="hooklife&#39;s blog">
+<meta property="og:description" content="简介Supervisor是一个python开发的进程管理工具，你可以使用它对  UNIX-like 操作系统的多个进程进行控制和监控。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://hooklife.me/img/supervistor_deepin_install/web_ui.png">
+<meta property="og:updated_time" content="2020-04-14T03:59:02.085Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="supervisor在deepin安装、使用与卸载">
+<meta name="twitter:description" content="简介Supervisor是一个python开发的进程管理工具，你可以使用它对  UNIX-like 操作系统的多个进程进行控制和监控。">
+<meta name="twitter:image" content="https://hooklife.me/img/supervistor_deepin_install/web_ui.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="hooklife&#39;s blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.png">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">hooklife</h5>
+          <a href="mailto:miaogaopeng123@gmail.com" title="miaogaopeng123@gmail.com" class="mail">miaogaopeng123@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/hooklife" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">supervisor在deepin安装、使用与卸载</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">supervisor在deepin安装、使用与卸载</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-11-14T03:00:00.000Z" itemprop="datePublished" class="page-time">
+  2017-11-14
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/linux/">linux</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#简介"><span class="post-toc-number">1.</span> <span class="post-toc-text">简介</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#安装"><span class="post-toc-number">2.</span> <span class="post-toc-text">安装</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#使用"><span class="post-toc-number">3.</span> <span class="post-toc-text">使用</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#1-配置"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">1.配置</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#2-reload并应用配置"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">2.reload并应用配置</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#3-管理程序"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">3.管理程序</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#4-使用web界面管理程序"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">4.使用web界面管理程序</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#参考资料"><span class="post-toc-number">3.4.1.</span> <span class="post-toc-text">参考资料:</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#卸载"><span class="post-toc-number">4.</span> <span class="post-toc-text">卸载</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-Supervisor在deepin安装、卸载与使用"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">supervisor在deepin安装、使用与卸载</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-11-14 11:00:00" datetime="2017-11-14T03:00:00.000Z"  itemprop="datePublished">2017-11-14</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/linux/">linux</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>Supervisor是一个python开发的进程管理工具，你可以使用它对  UNIX-like 操作系统的多个进程进行控制和监控。</p>
+<a id="more"></a>
+<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install supervisor</span><br></pre></td></tr></table></figure>
+<h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><h2 id="1-配置"><a href="#1-配置" class="headerlink" title="1.配置"></a>1.配置</h2><p>创建一个配置文件在/etc/supervisor/conf.d 目录下，文件命名必须以.conf结尾。例如: idea-worker.conf<br>内容大致如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[program:idea-worker]</span><br><span class="line">command=/root/IntelliJIDEALicenseServer_linux_amd64 //启动命令</span><br><span class="line">autostart=true // 在 supervisord 启动的时候也自动启动，如果设置为false 重启服务器后还需要手动执行命令进行运行</span><br><span class="line">autorestart=true // 程序异常退出后自动重启 设置为false supervisord 将不会在程序关闭后重新运行、设置</span><br><span class="line">stderr_logfile=/var/log/idea-worker.err.log // 错误日志</span><br><span class="line">stdout_logfile=/var/log/idea-worker.out.log // 所有日志</span><br></pre></td></tr></table></figure></p>
+<p><strong>autostart</strong><br> 在 supervisord 启动的时候也自动启动<br> false：重启服务器后还需要手动执行命令进行运行<br> true： 重启服务器后自动运行</p>
+<p><strong>autorestart</strong><br>程序异常退出后自动重启<br>false：supervisord 将不会在程序关闭后重新运行<br>true：supervisord 将会在程序关闭后重新运行<br>unexpected：supervisord 将在程序报异常的时候进行重启</p>
+<p><strong>stderr_logfile、stdout_logfile</strong><br>主要定义程序运行日志位置，指定的目录必须在启动程序前存在，supervisord不会创建目录，只会创建对应的文件</p>
+<p>文档列出很多可以进行配置的选项，可以查阅官方手册 <a href="http://supervisord.org/configuration.html#program-x-section-settings" target="_blank" rel="noopener">configuration</a></p>
+<h2 id="2-reload并应用配置"><a href="#2-reload并应用配置" class="headerlink" title="2.reload并应用配置"></a>2.reload并应用配置</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">supervisorctl reread</span><br><span class="line">supervisorctl update</span><br></pre></td></tr></table></figure>
+<h2 id="3-管理程序"><a href="#3-管理程序" class="headerlink" title="3.管理程序"></a>3.管理程序</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">supervisorctl</span><br></pre></td></tr></table></figure>
+<p>执行后进入supervisorctl界面，就可以对程序进行执行任务了<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">start idea-worker</span><br><span class="line">stop idea-worker</span><br><span class="line">restart idea-worker</span><br><span class="line">status</span><br><span class="line">quit</span><br></pre></td></tr></table></figure></p>
+<h2 id="4-使用web界面管理程序"><a href="#4-使用web界面管理程序" class="headerlink" title="4.使用web界面管理程序"></a>4.使用web界面管理程序</h2><p>supervisor 提供了通过浏览器来管理程序的方法。<br>开启方法：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/supervisor/supervisord.conf</span><br></pre></td></tr></table></figure></p>
+<p>添加这几行文字，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[inet_http_server]         ; inet (TCP) server disabled by default</span><br><span class="line">port=0.0.0.0:9001          ; (ip_address:port specifier, *:port for ;all iface)</span><br><span class="line">username=user              ; (default is no username (open server))</span><br><span class="line">password=123               ; (default is no password (open server))</span><br></pre></td></tr></table></figure></p>
+<p>打开 <a href="http://ip:9001" target="_blank" rel="noopener">http://ip:9001</a>  输入用户名密码，即可进入程序管理web界面<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/supervistor_deepin_install/web_ui.png" alt="webui" title>
+                </div>
+                <div class="image-caption">webui</div>
+            </figure></p>
+<p><strong>默认外网可以进行访问，请自行修改账号密码</strong></p>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料:"></a>参考资料:</h3><ul>
+<li><a href="https://www.digitalocean.com/community/tutorials/how-to-install-and-manage-supervisor-on-ubuntu-and-debian-vps" target="_blank" rel="noopener">How To Install and Manage Supervisor on Ubuntu and Debian VPS</a></li>
+<li><a href="http://liyangliang.me/posts/2015/06/using-supervisor/" target="_blank" rel="noopener">使用 supervisor 管理进程</a></li>
+<li><a href="https://laravel-china.org/topics/2126/supervisor-installation-configuration-use" target="_blank" rel="noopener">supervisor 安装配置使用</a></li>
+</ul>
+<h1 id="卸载"><a href="#卸载" class="headerlink" title="卸载"></a>卸载</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt purge supervisor</span><br></pre></td></tr></table></figure>
+<p>执行命令后</p>
+<p>supervisor 正常被卸载<br>supervisord 并没有被正常卸载</p>
+<p>输入supervisord 命令后报错<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"/usr/local/bin/supervisord"</span>, line <span class="number">6</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    <span class="keyword">from</span> pkg_resources <span class="keyword">import</span> load_entry_point</span><br><span class="line">  File <span class="string">"/usr/lib/python2.7/dist-packages/pkg_resources/__init__.py"</span>, line <span class="number">3019</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line"><span class="meta">    @_call_aside</span></span><br><span class="line">  File <span class="string">"/usr/lib/python2.7/dist-packages/pkg_resources/__init__.py"</span>, line <span class="number">3003</span>, <span class="keyword">in</span> _call_aside</span><br><span class="line">    f(*args, **kwargs)</span><br><span class="line">  File <span class="string">"/usr/lib/python2.7/dist-packages/pkg_resources/__init__.py"</span>, line <span class="number">3032</span>, <span class="keyword">in</span> _initialize_master_working_set</span><br><span class="line">    working_set = WorkingSet._build_master()</span><br><span class="line">  File <span class="string">"/usr/lib/python2.7/dist-packages/pkg_resources/__init__.py"</span>, line <span class="number">655</span>, <span class="keyword">in</span> _build_master</span><br><span class="line">    ws.require(__requires__)</span><br><span class="line">  File <span class="string">"/usr/lib/python2.7/dist-packages/pkg_resources/__init__.py"</span>, line <span class="number">963</span>, <span class="keyword">in</span> require</span><br><span class="line">    needed = self.resolve(parse_requirements(requirements))</span><br><span class="line">  File <span class="string">"/usr/lib/python2.7/dist-packages/pkg_resources/__init__.py"</span>, line <span class="number">849</span>, <span class="keyword">in</span> resolve</span><br><span class="line">    <span class="keyword">raise</span> DistributionNotFound(req, requirers)</span><br><span class="line">pkg_resources.DistributionNotFound: The <span class="string">'supervisor==3.2.0'</span> distribution was <span class="keyword">not</span> found <span class="keyword">and</span> <span class="keyword">is</span> required by the application</span><br></pre></td></tr></table></figure></p>
+<p>执行<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">whereis supervisord</span><br></pre></td></tr></table></figure></p>
+<p>查找supervisord在哪<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@jdu4e00u53f7:~# whereis supervisord</span><br><span class="line">supervisord: /usr/local/bin/supervisord</span><br></pre></td></tr></table></figure></p>
+<p>执行<br><code>rm -rf /usr/local/bin/supervisord</code>卸载成功</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2020-04-14T03:59:02.085Z" itemprop="dateUpdated">2020-04-14 11:59:02</time>
+</span><br>
+
+
+        
+        原始链接：<a href="/linux/Supervisor在deepin安装、卸载与使用/" target="_blank" rel="external">https://hooklife.me/linux/Supervisor在deepin安装、卸载与使用/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://hooklife.me">
+            <img src="/img/avatar.png" alt="hooklife">
+            hooklife
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/deepin/">deepin</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/supervisor/">supervisor</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ubuntu/">ubuntu</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hooklife.me/linux/Supervisor在deepin安装、卸载与使用/&title=《supervisor在deepin安装、使用与卸载》 — hooklife's blog&pic=https://hooklife.me/img/avatar.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hooklife.me/linux/Supervisor在deepin安装、卸载与使用/&title=《supervisor在deepin安装、使用与卸载》 — hooklife's blog&source=简介Supervisor是一个python开发的进程管理工具，你可以使用它对  UNIX-like 操作系统的多个进程进行控制和监控。" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hooklife.me/linux/Supervisor在deepin安装、卸载与使用/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《supervisor在deepin安装、使用与卸载》 — hooklife's blog&url=https://hooklife.me/linux/Supervisor在deepin安装、卸载与使用/&via=https://hooklife.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hooklife.me/linux/Supervisor在deepin安装、卸载与使用/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/前端/ubuntu中使用webpack,部分文件不能自动reload的解决方法/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">ubuntu中使用webpack,部分文件不能自动reload的解决方法</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/逆向/Navicat的爆破/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">记一次Navicat的爆破</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>hooklife &copy; 2015 - 2020</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hooklife.me/linux/Supervisor在deepin安装、卸载与使用/&title=《supervisor在deepin安装、使用与卸载》 — hooklife's blog&pic=https://hooklife.me/img/avatar.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hooklife.me/linux/Supervisor在deepin安装、卸载与使用/&title=《supervisor在deepin安装、使用与卸载》 — hooklife's blog&source=简介Supervisor是一个python开发的进程管理工具，你可以使用它对  UNIX-like 操作系统的多个进程进行控制和监控。" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hooklife.me/linux/Supervisor在deepin安装、卸载与使用/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《supervisor在deepin安装、使用与卸载》 — hooklife's blog&url=https://hooklife.me/linux/Supervisor在deepin安装、卸载与使用/&via=https://hooklife.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hooklife.me/linux/Supervisor在deepin安装、卸载与使用/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACxElEQVR42u3aUW6EMAwFwL3/pdsDtMB7caJSafiqWHbJUCk2tj+f+Pj6cfz8NPnW1e/c/311320HHh4e3njpV7e/v839opMz+X2TNePh4eGd5l0tt92s20Xc8/IHd3keDw8P72W8ZFn5pt9+ioeHh/e/eMn1SfmgfYh4eHh47+GtJb5tkMgLvklKvbnWgoeHhxfz8i7Se/4+0t/Dw8PDG3fV22ZYnvLm23oeDH75HTw8PLwDvHzDbTGTAu68tIGHh4d3jpe8/Cc33jti1SIvz+Dh4eEd5k0YSYCZLLQdINj8X8LDw8MbJ75JKyt5fPnjbhtjeHh4eOd4SRjIS7F7x7baELLYwcPDw8MreZMxpjYF31WqKNaMh4eHd5i3VhSYJNltWpwXOz6T+IOHh4cXfDoZrsqT9Tbtzq95KHbg4eHhbeXlBdYTwwGT0YGo4IuHh4d3gJeXaPPxgl3t//xbdRsMDw8PbysvL1XkTbK9hYn6jQEPDw9vKy9PT/MSalJ6SIJHPrhwicfDw8M7wMsLqW05ddLoagPMw/V4eHh4B3hrIwL50FVbFM4DVR3G8PDw8Dbx2oQ4Dxi7nn2b1o/yfTw8PLyAd/9DeQtqHhLaM20hAw8PD2/OW0ua8+1+bQigXdvlw8XDw8M7wFsrmOYp72QUIP+d6JUADw8PbysvT6DXtua29dW22YrZMTw8PLwDvLwZ1o5ATUap8pLuQ2DAw8PD28prb9CWgNcCwCc+6mkIPDw8vCXeiRGrHNkGkno9eHh4eAd47bbbNu/XBg5ODCvg4eHh7eW17fk8OW4LGXmAKVJwPDw8vGO8dtHtPpzHqKK5lQcGPDw8vD/l5UlwnnYnRY12zXh4eHjv5OWJcp0Kl6n/tpQaDw8PL+a1pYFkaKC9cm3U4OG+eHh4eAd4ay/8k4GDvNzQptSj/h4eHh7e83e/Aa16u2BuyCb/AAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/src/js/waves.min.js">
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

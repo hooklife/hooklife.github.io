@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+<!-- Google Analytics -->
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-110514158-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+<!-- End Google Analytics -->
+
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?a61423a9e09966d6384b1b3d64e97484"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <link rel="canonical" href="true/uncategorized/进程、协程、线程/">
+    
+    
+    <title>进程、协程、线程 | hooklife&#39;s blog | 这个世界会好么？</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content>
+    <meta name="description" content="首先需要了解两个概念，并发与并行 并发 (Concurreny) 与 并行 (Parallelism)                                                                                             cbu0a-yilrd              并发1并发 = ⼩小明可以⼀边玩⼿手机⼀边看电视。 事实上，⼩">
+<meta name="keywords" content="hooklife,hooklife&#39;blog">
+<meta property="og:type" content="article">
+<meta property="og:title" content="进程、协程、线程">
+<meta property="og:url" content="https://hooklife.me/uncategorized/进程、协程、线程/index.html">
+<meta property="og:site_name" content="hooklife&#39;s blog">
+<meta property="og:description" content="首先需要了解两个概念，并发与并行 并发 (Concurreny) 与 并行 (Parallelism)                                                                                             cbu0a-yilrd              并发1并发 = ⼩小明可以⼀边玩⼿手机⼀边看电视。 事实上，⼩">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://hooklife.me/img/process_thread_coroutine/cbu0a-yilrd.jpg">
+<meta property="og:image" content="https://hooklife.me/img/process_thread_coroutine/Timeslice.jpg">
+<meta property="og:updated_time" content="2020-04-14T03:59:02.087Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="进程、协程、线程">
+<meta name="twitter:description" content="首先需要了解两个概念，并发与并行 并发 (Concurreny) 与 并行 (Parallelism)                                                                                             cbu0a-yilrd              并发1并发 = ⼩小明可以⼀边玩⼿手机⼀边看电视。 事实上，⼩">
+<meta name="twitter:image" content="https://hooklife.me/img/process_thread_coroutine/cbu0a-yilrd.jpg">
+    
+        <link rel="alternate" type="application/atom+xml" title="hooklife&#39;s blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.png">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">hooklife</h5>
+          <a href="mailto:miaogaopeng123@gmail.com" title="miaogaopeng123@gmail.com" class="mail">miaogaopeng123@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/hooklife" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">进程、协程、线程</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">进程、协程、线程</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2020-04-14T03:46:10.000Z" itemprop="datePublished" class="page-time">
+  2020-04-14
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#并发-Concurreny-与-并行-Parallelism"><span class="post-toc-number">1.</span> <span class="post-toc-text">并发 (Concurreny) 与 并行 (Parallelism)</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#并发"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">并发</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#并行"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">并行</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#进程、线程和协程之间的区别"><span class="post-toc-number">2.</span> <span class="post-toc-text">进程、线程和协程之间的区别</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#特点"><span class="post-toc-number">2.0.1.</span> <span class="post-toc-text">特点</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#线程-Thread"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">线程 (Thread)</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#特点-1"><span class="post-toc-number">2.1.1.</span> <span class="post-toc-text">特点</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#协程-Coroutine"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">协程 (Coroutine)</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#简介"><span class="post-toc-number">2.2.1.</span> <span class="post-toc-text">简介</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#特点-2"><span class="post-toc-number">2.2.2.</span> <span class="post-toc-text">特点</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#总结"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">总结</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#CPU-时间片"><span class="post-toc-number">2.3.1.</span> <span class="post-toc-text">CPU 时间片</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#进程-与-线程-在-linux-中的区别"><span class="post-toc-number">2.3.2.</span> <span class="post-toc-text">进程 与 线程 在 linux 中的区别</span></a></li></ol></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-进程、协程、线程"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">进程、协程、线程</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2020-04-14 11:46:10" datetime="2020-04-14T03:46:10.000Z"  itemprop="datePublished">2020-04-14</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>首先需要了解两个概念，并发与并行</p>
+<h2 id="并发-Concurreny-与-并行-Parallelism"><a href="#并发-Concurreny-与-并行-Parallelism" class="headerlink" title="并发 (Concurreny) 与 并行 (Parallelism)"></a>并发 (Concurreny) 与 并行 (Parallelism)</h2><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/process_thread_coroutine/cbu0a-yilrd.jpg" alt="cbu0a-yilrd" title>
+                </div>
+                <div class="image-caption">cbu0a-yilrd</div>
+            </figure>
+<h3 id="并发"><a href="#并发" class="headerlink" title="并发"></a>并发</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">并发 = ⼩小明可以⼀边玩⼿手机⼀边看电视。</span><br></pre></td></tr></table></figure>
+<p>事实上，⼩小明的眼睛在看电视的时候并不能看⼿手机，他在看手机的时候也没办法盯着电视屏幕。<br>他的眼睛⻜快的在两个屏幕上切换<br><strong>这不是真正意义上的同时进行，但⼜是客观存在同时进行两件事，这叫并发。</strong></p>
+<h3 id="并行"><a href="#并行" class="headerlink" title="并行"></a>并行</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">并行 = ⼩明可以⼀边坐公交⼀边听音乐。</span><br></pre></td></tr></table></figure>
+<p>这两件事互不干扰，⼩明可以做到真正意义的同步同时进行，这叫并行</p>
+<h2 id="进程、线程和协程之间的区别"><a href="#进程、线程和协程之间的区别" class="headerlink" title="进程、线程和协程之间的区别"></a>进程、线程和协程之间的区别</h2><p>###进程(<strong>Process</strong>)</p>
+<p><strong>进程让操作系统的并发成为了可能</strong>，它是资源分配的<strong>最小单位</strong> 。每个进程来对应一定的内存空间，并<br>且只能使⽤它⾃⼰的内存空间，各个进程之间互不干扰。进程同时也保存了了程序每个时刻的运行状态，<br>为 <strong>进程切换</strong> 提供了可能。当进程暂停时，它会保存当前进程的状态(进程标识，进程使⽤用的资源<br>等)，在下一次切换回来时根据之前保存的状态进行恢复，接着继续执行。</p>
+<h4 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h4><ul>
+<li>进程之间不共享任何状态</li>
+<li>进程的调度由操作系统完成</li>
+<li><p>每个进程都有自⼰独⽴的内存空间</p>
+</li>
+<li><p>由于进程⽐较重量，占据独立的内存，所以创建、销毁和上下⽂进程间的切换开销(栈、寄存器、 ⽂件句柄等)⽐较⼤。</p>
+</li>
+<li>由于进程间之间互不不干扰,各⾃拥有自⼰的内存空间, 因此相对于线程比较安全, 所以不同进程之间的数据只能通过 <strong>IPC</strong>(Inter-Process Communication) 进行通信共享，通讯效率比较低。 </li>
+</ul>
+<h3 id="线程-Thread"><a href="#线程-Thread" class="headerlink" title="线程 (Thread)"></a>线程 (<strong>Thread</strong>)</h3><p>每个进程⾄至少有一个线程。线程是依赖于进程的，是操作系统能够进⾏<strong>运算调度</strong>的最小单位。也称为 「微进程」 。<strong>线程的出现是为了降低上下文切换的消耗，提⾼系统的并发性，并突破⼀个进程只能⼲一 样事的缺陷，使到进程内并发成为可能</strong>。 </p>
+<p><strong>进程让操作系统的并发性成为了可能，⽽线程让进程的内部并发成为了可能</strong>。 </p>
+<h4 id="特点-1"><a href="#特点-1" class="headerlink" title="特点"></a>特点</h4><ul>
+<li><p>⼀个进程可以包含多个线程，但是这些线程共享进程占有的内存地址空间和资源。线程之间共享变量，解决了了通讯麻烦的问题</p>
+</li>
+<li><p>线程能够共享进程的⼤部分资源，创建、销毁和上下文切换开销比较小。 线程之间的通讯除了了可以使用进程之间通讯的⽅式以外还可以通过共享内存的⽅式进行通信，通讯效率较高</p>
+</li>
+<li>多线程是不安全的,当一个线程崩溃了了,会导致整个进程也崩溃了,即其他线程也挂了, 但多进程⽽不 会,一个进程挂了了,另⼀个进程依然照样运行。</li>
+</ul>
+<h3 id="协程-Coroutine"><a href="#协程-Coroutine" class="headerlink" title="协程 (Coroutine)"></a>协程 (<strong>Coroutine</strong>)</h3><h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><p><strong>协程是一种⽤户态的轻量级线程</strong>，它的<strong>调度不来⾃于系统</strong>，⽽是<strong>完全来自于⽤用户控制</strong>。协程拥有⾃己的寄存器上下文和栈。协程调度切换时，将寄存器上下文和栈保存到其 他地方，在切回来的时候，恢复先前保存的寄存器器上下文和栈，直接操作栈则基本没有内核切换的开销，所以上下文的切换非常快。不不过协程本身⽆法利用多核CPU，因为它基于线程，⽽线程⼜依赖于进程。</p>
+<h4 id="特点-2"><a href="#特点-2" class="headerlink" title="特点"></a>特点</h4><ul>
+<li>协程的调度完全由⽤用户控制</li>
+<li>本身无法利用多核CPU</li>
+<li>可并发执行</li>
+<li>更好的利用CPU，不用把CPU浪费在线程调度和上下文切换上</li>
+<li>协程可以更好的利用内存，不用全都分配⼀个偏大的空间，只需要分配需要的对应空间即可</li>
+<li>协程需要保证程序是⾮堵塞。</li>
+<li>切换开销远比线程小。</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>　　对于 <strong>进程、线程</strong>，都是有内核进行调度，有 [<strong>CPU 时间片</strong>][CPU 时间片] 的概念。</p>
+<p>　　对于 <strong>协程</strong>(用户级线程)，这是对内核透明的，也就是系统并不知道有协程的存在，是完全由用户自己的程序进行调度的，因为是由用户程序自己控制，那么就很难像抢占式调度那样做到强制的 CPU 控制权切换到其他进程/线程，通常只能进行 <strong>协作式调度</strong>，需要协程自己主动把控制权转让出去之后，其他协程才能被执行到。</p>
+<h4 id="CPU-时间片"><a href="#CPU-时间片" class="headerlink" title="CPU 时间片"></a>CPU 时间片</h4><p>任何线程如果都排队等待CPU资源的获取，那么所谓的 多线程/多进程 就没有任何实际意义。</p>
+<p><strong>时间片即 CPU 分配给各个程序的时间</strong>，在 Linux 的内核处理过程中，每一个进程/线程默认会有一个固定的时间片来执行命令（默认为1/100秒），每个 进程/线程 被分配一个时间段执行，使各个程序从表面上看是同时进行的。如果在时间片结束时进程还在运行，则CPU将被剥夺并分配给另一个进程。如果进程在时间片结束前阻塞或结束，则CPU当即进行切换。而不会造成CPU资源浪费。由于只有一个CPU，一次只能处理程序要求的一部分，如何处理公平，一种方法就是引入时间片，每个程序轮流执行。</p>
+<p><img src="/img/process_thread_coroutine/Timeslice.jpg" alt="Timeslice"></p>
+<h4 id="进程-与-线程-在-linux-中的区别"><a href="#进程-与-线程-在-linux-中的区别" class="headerlink" title="进程 与 线程 在 linux 中的区别"></a>进程 与 线程 在 linux 中的区别</h4><p>进程和线程其实在 linux 中区别并不大，具体内容可以查看<a href="https://juejin.im/entry/56daf0047664bf0052f0bdbd" target="_blank" rel="noopener">这篇文章</a></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2020-04-14T03:59:02.087Z" itemprop="dateUpdated">2020-04-14 11:59:02</time>
+</span><br>
+
+
+        
+        原始链接：<a href="/uncategorized/进程、协程、线程/" target="_blank" rel="external">https://hooklife.me/uncategorized/进程、协程、线程/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://hooklife.me">
+            <img src="/img/avatar.png" alt="hooklife">
+            hooklife
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hooklife.me/uncategorized/进程、协程、线程/&title=《进程、协程、线程》 — hooklife's blog&pic=https://hooklife.me/img/avatar.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hooklife.me/uncategorized/进程、协程、线程/&title=《进程、协程、线程》 — hooklife's blog&source=hooklife 的个人博客" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hooklife.me/uncategorized/进程、协程、线程/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《进程、协程、线程》 — hooklife's blog&url=https://hooklife.me/uncategorized/进程、协程、线程/&via=https://hooklife.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hooklife.me/uncategorized/进程、协程、线程/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/uncategorized/数组的底层实现：HashTable.mdq/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">数组的底层实现：HashTable</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>hooklife &copy; 2015 - 2020</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hooklife.me/uncategorized/进程、协程、线程/&title=《进程、协程、线程》 — hooklife's blog&pic=https://hooklife.me/img/avatar.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hooklife.me/uncategorized/进程、协程、线程/&title=《进程、协程、线程》 — hooklife's blog&source=hooklife 的个人博客" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hooklife.me/uncategorized/进程、协程、线程/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《进程、协程、线程》 — hooklife's blog&url=https://hooklife.me/uncategorized/进程、协程、线程/&via=https://hooklife.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hooklife.me/uncategorized/进程、协程、线程/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACLklEQVR42u3awYrDMAxF0f7/T2eg2+L0XSkZGvl6FQaT+HRASJZer3gd77V6Xq3P/Z/vXL3tdceSIUPGYxn0KP09q+Mm+5dUGTJkbMBIguzqw/1Qfv5znJ9NhgwZMuirz3fme2TIkCGjE3CTD9cOSgtgGTJk7MZIithaAO0E01tqcRkyZDyQ0W8M3Pf8r/0NGTJk/CTjgIsmdrXQjE8lQ4aM0YykyKQtRto2oCnp8p0yZMgYysgv8WkBSQG0UboMtTJkyNiGkVyu0RCZ/xA0xZQhQ8ZuDDowkadxefsTP8uQIWMDRo6hQxIgaMZppQwZMnZj0FEt2jDIB8hqrU0ZMmTsxqAXcLUAnaeeyV9kyJCxD4MmcLQxQK/nik1TGTJkDGXUytRogoNOfHTGPmTIkLEBIy816YBFp5GJ628ZMmSMZuSfubYZEOWtCUmGDBmjGf3krNZ0rF2o5WFahgwZUxn9UrPzBnr0JUmGDBlDGTRpo+GSJpTF9FGGDBlDGfmYV36hRq/e6GXcl/+DDBkyhjJohM7Dax6+KWw5LSJDhoxxjNoV2LUhFdwFJlW4DBkyxjEOuGg6WLu9T8L3cixMhgwZ4xj5qgXfTnvgqsEyGTJkzGDQIFtrXtbakxfcHcqQIWMQg45zHaVFgzIYL5MhQ4aM9sBEfuhaM1WGDBkyknK0FnBpi+JLEStDhozRjGtHHzp78qBcrMVlyJDxQEatMdDZQ9PKG1uYMmTI+HXGH/rciYdUR/FTAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/src/js/waves.min.js">
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
