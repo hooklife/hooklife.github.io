@@ -18,9 +18,9 @@ comments: false
 - 对接过 支付宝、微信、连连支付等第三方接口
 - 开发过大量微信程序
 ## PHP
-- 熟悉 PHP5、PHP7 语法以及 PSR 标准
+- 熟悉 PHP5、PHP7、PHP8 语法以及 PSR 标准
 - 熟练掌握 Laravel，ThinkPHP 框架，并大概了解其原理可快速上手其他框架
-- 对 swoole 有简单了解
+- 使用过 Swoole 框架，并在线上运行并处理日常问题
 - 对 PHP、PHP-FPM 原理有一定了解, 日常开发都很注意安全与提高性能的细节
 ## Linux 运维
 - 能够熟练使用命令行完成各种日常任务。
@@ -32,52 +32,67 @@ comments: false
 ## Docker
 - 熟练使用 Docker 作为日常开发工具，通过 docker-compose 能快速在本地/线上搭建各种开发/测试环境。
 - 熟练编写 Dockerfile 能将各种服务镜像化便于开发、测试、部署。
+- 使用过 Kubernets、 Ingress、Knative、进行环境部署，运维。
 ## 前端
 - 了解 es6 webpack vuejs gulp 等前端技术并能编写简单应用
 - 能够编写语义化的 HTML、CSS，实现较为复杂的布局
 - 熟悉 jQuery / Bootstrap 的使用与扩展
 ----
 # 工作经历
+### 沈阳中普互联网金融(2018.8~至今)
+    项目经理
+    互联网/商城
+    工作描述：负责公司商城、仓储、商品库开发任务分配、管理。
+### 沈阳中普互联网金融(2016.5~2018.8)
+    PHP程序员
+    互联网/互联网金融
+    工作描述：负责公司P2P借贷项目API/微信部分编写
 ### 沈阳云端科技有限公司(2014.6~2015.8)
 	PHP程序员
 	互联网/电子商务
 	工作描述：担任技术主管，负责网站后台/api部分开发
-### 沈阳中普互联网金融(2016.5~至今)
-    PHP程序员
-    互联网/互联网金融
-    工作描述：负责公司P2P借贷项目API/微信部分编写
 ----
 # 项目经历
-## 1.赚个房API接口项目编写
-- 使用laravel框架编写的 RESTful 接口，使用 JWT 进行权限控制
+
+## 1.仓库系统开发
+- 带领团队敏捷开发，使用 Tower 管理开发任务、进度;开发流程使用 GitHub flow
+- 使用 Laravel + octane 编写高性能 RESTful 接口，接口全部严格按照 RESTful 规范开发
+- 使用 Drone 自动化 CI/CD
+
+## 2.赚个房API接口项目编写
+- 使用 Laravel 框架编写的 RESTful 接口，使用 JWT 进行权限控制
 - 使用 redis 自旋锁解决高并发标的超卖问题
-- 使用Laravel Event 进行异步处理耗时任务，使用 Laravel Scheduling 进行定时对账与同步各套系统数据
+- 使用 Laravel Event 进行异步处理耗时任务，使用 Laravel Scheduling 进行定时对账与同步各套系统数据
 - 使用 openresty + ELK 对用户请求进行记录并友好展示，使用 elastalert + 钉钉机器人 对接口进行监控与报警
 - 并通过日志/火焰图 对性能优化，通过 MySQL 慢查日志对 SQL 语句与数据库结构优化，并尝试使用 Swoole 优化性能
 - 使用openresty 对网站进行限流，防止用户突然涌入导致系统出现问题
 - 使用 golang 编写监控 MySQL binlog 进而进行对程序的缓存进行更新
 - 使用 docker 进行部署,使用 confd 进行动态更新配置。
-## 2.赚个房业绩系统编写
+## 3.赚个房业绩系统编写
 - 使用 golang 编写监控 MySQL binlog 的程序，并把数据库变化实时通知到 rabbitmq
 - 使用 PHP 订阅 rabbitmq 对三个 Mysql 数据库的数据进行实时的同步/合并
 - 使用 docker 进行部署。
-## 3.通知中心编写
+## 4.通知中心编写
 - 使用 golang + grpc 编写通知中心服务,主要用来发送短信/邮件/微信的通知，是赚个房项目微服务化的第一步。
-## 4.华晨宝马投票项目编写
+## 5.华晨宝马投票项目编写
 - 使用laravel框架编写，投票时使用mysql事务保证数据一致性，防止并发过高导致单账号多次投票问题
 - 分析慢查询日志，对mysql慢查询进行索引、语句层面优化，对排行进行缓存优化
 - 为防止并发过高,照成各种问题，使用 nginx 进行限流处理。
-## 3. 赚个房微信项目编写
+## 6. 赚个房微信项目编写
 - 使用 Vue + mintui 编写的手机端SPA页面
 - 使用 vuex 存储用户信息
 - 使用 axios 调用 API 接口。
-## 4.年会抽奖系统编写
+## 7.年会抽奖系统编写
 - 使用laravel框架，预先生成中奖信息插入 redis，静态资源与页面全部扔到CDN上，抽奖时直接进行 redis 读取是否中奖
 - 用户信息、日志全部使用redis做缓存，使用队列插入到mysql。单机能承受 1000+ 并发。
 
 # 业余作品 (https://github.com/hooklife)
-## 1.thinkphp5-wechat
-	描述:微信 SDK for thinkphp5, 基于 overtrue/wechat
+## 1.larave-query-builder
+	描述: 根据 API 请求简单快速构造 Eloquent queries 语句
+## 2.php-octane-docker
+	描述：PHP8+octane dockerfile，超小体积
+## 3.hyperf-aliyun-amqp
+	描述：hyper aliyun amqp 连接组件
 ## 2.斗鱼火箭监视自动抢鱼丸
 	描述:chrome扩展 自动监视斗鱼火箭，自动抢宝箱鱼丸，拥有上万（http://www.52pojie.cn/thread-471893-1-1.html）使用者
 ## 3.dongtu-function
